@@ -4,7 +4,7 @@
 /////////////////////////////EXPO DRIVE FUNC////////////////////////////////////
 //____________________________________________________________________________//
 Controller master (CONTROLLER_MASTER); //
-
+//expo drive
 int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
   int joystkSign;
   int joyMax = 127 - joystkDead;
@@ -28,7 +28,7 @@ void opClass::opControl() {
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
 //____________________________________________________________________________//
     double getVelocity(Motor motor) {
-      return motor.get_actual_velocity();
+      return motor.get_actual_velocity(); //return velocity of motor
     };
 //____________________________________________________________________________//
 //////////////////////////ACCELERATION DRIVE FUNC///////////////////////////////
@@ -38,20 +38,22 @@ void AccTask_fn(void*par) {
     int n; //change to n = (port number) when using
     Motor motor (n); //placeholder; can replace with actual motor name
     int time; //replace with time in ms to change how long acceleration takes
-    int velCap; //placeholder; can replace with actual number
+    int velCap; //placeholder; can replace with actual number that represents motor velocity cap
     int motorVel;
-    int i; i < velCap;
-    int incFactor;
+    //int i; i < velCap;
+    //int incFactor;
 
-    if (master.get_digital(DIGITAL_A)){
+    if (master.get_digital(DIGITAL_A)){ //if A button is pressed
       for (true; motor.get_actual_velocity() < velCap; motorVel ++) { //"true" used to be: motor.get_actual_velocity() = i
-        motor.move_velocity(motorVel);
+        motor.move_velocity(motorVel); //motor speed acceleration/ramping
       }
       //if motor velocity IS above velocity cap:
-      motor.move_velocity(velCap);
+      motor.move_velocity(velCap); //
     }
     else {}
-    delay(time);
+    delay(time); //time controls how fast motor speeds up; i.e. if time = 1 motor takes 200ms to reach full speed, if it's 2, it takes 400ms, etc.
+    //will find minimum time (time that it naturally takes a motor to accelerate) because 'time' value should not go below it
+    //^^will do the above when I have access to a robot
   }
 }
 //example of use on main.cpp
@@ -60,7 +62,7 @@ void AccTask_fn(void*par) {
 /////////////////////////////////STOP FUNC//////////////////////////////////////
 //____________________________________________________________________________//
 void dpidClass::stop (void) {
-      driveLB.move(0);
+      driveLB.move(0); //do not move motors
       driveRB.move(0);
       driveLF.move(0);
       driveRF.move(0);
@@ -106,7 +108,6 @@ void dpidClass::movePID(int direction, int target, int timeout, int cap) {
 
         delay(20);
   	}
-    stop(); //not entirely sure if this should go here?
 };
 //____________________________________________________________________________//
 /////////////////////////////////TURN PID///////////////////////////////////////
@@ -151,8 +152,7 @@ void dpidClass::turnPID(int direction, int target, int timeout) {
 
         delay(20);
   	}
-    stop(); //not entirely sure if this should go here?
-}
+};
 //____________________________________________________________________________//
 /////////////////////////////////STRAFE PID/////////////////////////////////////
 //____________________________________________________________________________//
@@ -194,7 +194,26 @@ void dpidClass::strafePID(int direction, int target, int timeout, int cap) {
 
         delay(20);
   	}
-    stop(); //not entirely sure if this should go here?
 }
-
     //examples on main.cpp
+
+//____________________________________________________________________________//
+////////////////////////////TEMPERATURE CONTROL/////////////////////////////////
+//____________________________________________________________________________//
+  int getTemperature(Motor motor) {
+    return motor.get_temperature();
+  };
+
+  void opClass::temperatureControl() { //this is currently untested because I don't have access to a robot
+    if(getTemperature(driveLB) > 45 || //if any motors' temperatures are over 45 degrees celcius, stop all motors
+      getTemperature(driveLF) > 45 ||
+      getTemperature(driveRB) > 45 ||
+      getTemperature(driveRF) > 45) {
+      driveLB.move(0);
+      driveLF.move(0);
+      driveRB.move(0);
+      driveRF.move(0);
+    }
+
+    else {}
+  };

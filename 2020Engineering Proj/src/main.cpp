@@ -15,16 +15,15 @@ void on_center_button() {
 		pros::lcd::clear_line(2);
 	}
 }
-	//drive PID
+	//drive objects
 	dpidClass chassis;
 	opClass base;
-	opClass test;
 
 //motors
-	Motor driveLF(16, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRF(19, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRB(18, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor driveLB(13, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+	Motor driveLF(1, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+	Motor driveRF(2, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor driveRB(3, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor driveLB(4, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 //tasks
 pros::Task yeet_task(
 	AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "test task"
@@ -101,14 +100,16 @@ void autonomous() {
 void opcontrol() {
 
 	while (true) {
-		int count;
+		int count; //counter/timer (used to measure time for controller shake)
 		//example of controller shake code:
 		if (count >= 95000) {master.rumble("___ .___");} //when 1:35 in operator control, shake controller
 		else {}
 		//example of expo drive:
 		base.opControl();
+		//example of temperature control
+		base.temperatureControl();
 
 		pros::delay(10);
-		count +=10;
+		count +=10; 
 	}
 }

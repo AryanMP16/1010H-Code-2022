@@ -2,19 +2,21 @@
 #include "main.h"
 using namespace pros;
 
-class dpidClass{
+class dpidClass{ //drive PID class
 public:
-  void stop(void);
-  void movePID(int direction, int target, int timeout, int cap);
-  void strafePID(int direction, int target, int timeout, int cap);
-  void turnPID(int direction, int target, int timeout);
+  void stop(void); //stop function
+  void movePID(int direction, int target, int timeout, int cap); //function for autonomous PID drive
+  void strafePID(int direction, int target, int timeout, int cap); //PID strafe
+  void turnPID(int direction, int target, int timeout); //PID turn
 };
 
-class opClass{
+class opClass{ //operator control class
 public:
-    void opControl(void);
-    void moveAt (Motor motor, int accFactor, int velCap);
+    void opControl(void); //op control drive (expo drive)
+    //void moveAt (Motor motor, int accFactor, int velCap);
+    void temperatureControl(void); //temperature control function
 };
 
-double getVelocity(Motor motor);
-void AccTask_fn(void*par);
+double getVelocity(Motor motor); //for getting motor velocity
+void AccTask_fn(void*par); //task for motor acceleration
+int getTemperature(Motor motor); //for getting motor temperature
