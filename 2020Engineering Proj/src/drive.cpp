@@ -206,7 +206,7 @@ void dpidClass::strafePID(int direction, int target, int timeout, int cap) {
 
   void opClass::temperatureControl() { //this is currently untested because I don't have access to a robot
     if(getTemperature(driveLB) > 45 || //if any motors' temperatures are over 45 degrees celcius, stop all motors
-      getTemperature(driveLF) > 45 ||
+      getTemperature(driveLF) > 45 || //^^the number 45 will change once I have a robot to test this on; it is just a placeholder for now
       getTemperature(driveRB) > 45 ||
       getTemperature(driveRF) > 45) {
       driveLB.move(0);
