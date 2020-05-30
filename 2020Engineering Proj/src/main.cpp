@@ -25,8 +25,8 @@ void on_center_button() {
 	Motor driveRB(3, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor driveLB(4, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 //tasks
-pros::Task yeet_task(
-	AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "test task"
+pros::Task acc_task(
+	AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "TEST_TASK"
 );
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -110,6 +110,6 @@ void opcontrol() {
 		base.temperatureControl();
 
 		pros::delay(10);
-		count +=10; 
+		count +=10;
 	}
 }

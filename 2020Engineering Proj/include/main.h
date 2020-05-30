@@ -69,14 +69,16 @@ using namespace std;
  * button press in opcontrol() for testing purposes).
  */
 
+//Controller
  extern Controller master;
 
- //drive PID class
+ //Objects
  extern dpidClass chassis;
  extern opClass base;
- //velocity + acceleration controllers class
- //extern moveClass moveAt;
 
+//Task
+ extern Task acc_task;
+//Motors
  extern Motor driveRB;
  extern Motor driveRF;
  extern Motor driveLB;
