@@ -23,7 +23,7 @@ void opClass::opControl() {
  	    driveRF.move(Y - X - Z); //the front right motor moves according to 'right' values
  	    driveLF.move(Y + X + Z); //the front left motor moves according to 'left' values
  	    driveRB.move(Y + X - Z); //the back right motor moves according to 'right' values
-    };
+    }; 
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
 //____________________________________________________________________________//
