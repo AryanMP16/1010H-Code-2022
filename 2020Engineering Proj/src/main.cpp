@@ -45,6 +45,9 @@ void initialize() {
 	driveRF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveLF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveRB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
+//Vision Sensor
+	Vision cam1 (20, E_VISION_ZERO_CENTER);
+	cam1.clear_led();
 }
 
 /**
