@@ -14,7 +14,7 @@ int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
   else joystkSign = 0;
   int power = joystkSign * (motorMin + (127 - motorMin) * pow(joyLive, driveExpon) / pow(joyMax, driveExpon));
   return power;}
-
+//testing upload to github
 void opClass::opControl() {
     int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
  		int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
