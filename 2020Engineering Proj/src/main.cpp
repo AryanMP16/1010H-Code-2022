@@ -102,6 +102,7 @@ void autonomous() {
  */
 void opcontrol() {
 
+	Vision cams(10);
 	while (true) {
 		int count; //counter/timer (used to measure time for controller shake)
 		//example of controller shake code:
@@ -111,6 +112,11 @@ void opcontrol() {
 		base.opControl();
 		//example of temperature control
 		base.temperatureControl();
+
+		vision_color_code_t codeBLUE = cams.create_color_code(1, 2);
+		vision_object_s_t rtn = cams.get_by_sig(0, codeBLUE);
+
+		std::cout << "sig:" << rtn.signature << " Time:" << count << "\n";
 
 		pros::delay(10);
 		count +=10;

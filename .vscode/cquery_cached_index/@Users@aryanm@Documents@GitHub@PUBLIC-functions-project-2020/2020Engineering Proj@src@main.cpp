@@ -102,6 +102,9 @@ void autonomous() {
  */
 void opcontrol() {
 
+	vision_signature_s_t BLUE_BALL =
+	Vision::signature_from_utility(BLUE_BALL, 8973, 11143, 10058, -2119, -1053, -1586, 5.4, 0);
+
 	while (true) {
 		int count; //counter/timer (used to measure time for controller shake)
 		//example of controller shake code:
@@ -111,6 +114,8 @@ void opcontrol() {
 		base.opControl();
 		//example of temperature control
 		base.temperatureControl();
+
+		vision_signature_s_t rtn = sensor.get_by_sig(VISION_PORT, 0, EXAMPLE_SIG);
 
 		pros::delay(10);
 		count +=10;
