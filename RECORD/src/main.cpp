@@ -78,10 +78,10 @@ void competition_initialize() {}
  */
 void autonomous() {
 	//example of drive and turn PIDs:
-	chassis.movePID(FORWARD, 123, 1234, 123);
+	/*chassis.movePID(FORWARD, 123, 1234, 123);
 	chassis.turnPID(LEFT, NINETY_DEG, 1234);
 	chassis.strafePID(LEFT_STRAFE, 123, 1234, 123);
-	chassis.stop();
+	chassis.stop();*/
 }
 
 /**
@@ -102,22 +102,47 @@ void opcontrol() {
 	//Vision cams(10);
 		int time;
 		time = 0;
-	while (true) {
-		int count; //counter/timer (used to measure time for controller shake)
-		//example of controller shake code:
-		if (count >= 95000) {master.rumble("___ .___");} //when 1:35 in operator control, shake controller
-		else {}
-		//example of expo drive:
+
+		FILE* file = fopen("/usd/example.txt", "w"); //opening the file to record to
+
+	while (time<14500) {
+
+		//recording from drive Motors
+ 				fprintf(file, "%f\n", getVelocity(driveRB)); //recording from the right back drive motor
+ 				fprintf(file, "%f\n", getVelocity(driveRF)); //recording from the right front drive motor
+ 				fprintf(file, "%f\n", getVelocity(driveLB)); //recording from the left back drive motor
+ 				fprintf(file, "%f\n", getVelocity(driveLF)); //recording from the left back drive motor
+
 		base.opControl();
-		//example of temperature control
-		base.temperatureControl();
 
-		//vision_color_code_t codeBLUE = cams.create_color_code(1, 2);
-		//vision_object_s_t rtn = cams.get_by_sig(0, codeBLUE);
-
-		//std::cout << "sig:" << rtn.signature << " Time:" << (time+=10) << " milliseconds" << "\n";
+		if(master.get_digital(DIGITAL_A)){
+			driveLB.move(127);
+		}
+		else if(master.get_digital(DIGITAL_B)){
+			driveRB.move(127);
+		}
+		else if(master.get_digital(DIGITAL_Y)){
+			driveLF.move(127);
+		}
+		else if(master.get_digital(DIGITAL_X)){
+			driveRF.move(127);
+		}
+		else{}
 
 		pros::delay(10);
-		count +=10;
+		time +=10;
+
+		if (time > 14500) { //if the program surpasses 14500 milliseconds, it will not continue recording
+ 			driveLB.move(0); //the left back drive motor will stop moving, and thus, stop recording
+ 			driveLF.move(0); //the left front drive motor will stop moving, and thus, stop recording
+ 			driveRB.move(0); //the right back drive motor will stop moving, and thus, stop recording
+ 			driveRF.move(0); //the right front drive motor will stop moving, and thus, stop recording
+ 		}
 	}
+	fclose(file); //close the file to stop recording
 }
+
+//vision_color_code_t codeBLUE = cams.create_color_code(1, 2);
+//vision_object_s_t rtn = cams.get_by_sig(0, codeBLUE);
+
+//std::cout << "sig:" << rtn.signature << " Time:" << (time+=10) << " milliseconds" << "\n";
