@@ -45,9 +45,6 @@ void initialize() {
 	driveRF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveLF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveRB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
-//Vision Sensor
-	Vision cam1 (20, E_VISION_ZERO_CENTER);
-	cam1.clear_led();
 }
 
 /**
@@ -103,6 +100,8 @@ void autonomous() {
 void opcontrol() {
 
 	Vision cams(10);
+		int time;
+		time = 0;
 	while (true) {
 		int count; //counter/timer (used to measure time for controller shake)
 		//example of controller shake code:
@@ -116,7 +115,7 @@ void opcontrol() {
 		vision_color_code_t codeBLUE = cams.create_color_code(1, 2);
 		vision_object_s_t rtn = cams.get_by_sig(0, codeBLUE);
 
-		std::cout << "sig:" << rtn.signature << " Time:" << count << "\n";
+		std::cout << "sig:" << rtn.signature << " Time:" << (time+=10) << " milliseconds" << "\n";
 
 		pros::delay(10);
 		count +=10;

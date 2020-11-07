@@ -18,12 +18,12 @@ int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
 void opClass::opControl() {
     int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
  		int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
- 		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
-      driveLB.move(Y - X + Z); //the back left motor moves according to 'left' values
- 	    driveRF.move(Y - X - Z); //the front right motor moves according to 'right' values
- 	    driveLF.move(Y + X + Z); //the front left motor moves according to 'left' values
- 	    driveRB.move(Y + X - Z); //the back right motor moves according to 'right' values
-    }; 
+ 		//int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
+      driveLB.move(Y - X /*+ Z*/); //the back left motor moves according to 'left' values
+ 	    driveRF.move(Y - X /*- Z*/); //the front right motor moves according to 'right' values
+ 	    driveLF.move(Y + X /*+ Z*/); //the front left motor moves according to 'left' values
+ 	    driveRB.move(Y + X /*- Z*/); //the back right motor moves according to 'right' values
+    };
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
 //____________________________________________________________________________//
