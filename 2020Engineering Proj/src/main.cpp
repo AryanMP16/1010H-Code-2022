@@ -20,10 +20,10 @@ void on_center_button() {
 	opClass base;
 
 //motors
-	Motor driveLF(1, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRF(2, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRB(3, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor driveLB(4, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+	Motor driveLF(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor driveRF(2, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+	Motor driveRB(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+	Motor driveLB(4, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 //tasks
 pros::Task acc_task(
 	AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "TEST_TASK"
@@ -99,7 +99,7 @@ void autonomous() {
  */
 void opcontrol() {
 
-	Vision cams(10);
+	//Vision cams(10);
 		int time;
 		time = 0;
 	while (true) {
@@ -112,10 +112,10 @@ void opcontrol() {
 		//example of temperature control
 		base.temperatureControl();
 
-		vision_color_code_t codeBLUE = cams.create_color_code(1, 2);
-		vision_object_s_t rtn = cams.get_by_sig(0, codeBLUE);
+		//vision_color_code_t codeBLUE = cams.create_color_code(1, 2);
+		//vision_object_s_t rtn = cams.get_by_sig(0, codeBLUE);
 
-		std::cout << "sig:" << rtn.signature << " Time:" << (time+=10) << " milliseconds" << "\n";
+		//std::cout << "sig:" << rtn.signature << " Time:" << (time+=10) << " milliseconds" << "\n";
 
 		pros::delay(10);
 		count +=10;
