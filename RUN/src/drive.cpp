@@ -19,10 +19,10 @@ void opClass::opControl() {
     int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
  		//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
  		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
-      driveLB.move(Y /*- X*/ - Z); //the back left motor moves according to 'left' values
- 	    driveRF.move(Y /*- X*/ + Z); //the front right motor moves according to 'right' values
- 	    driveLF.move(Y /*+ X*/ - Z); //the front left motor moves according to 'left' values
- 	    driveRB.move(Y /*+ X*/ + Z); //the back right motor moves according to 'right' values
+      driveLB.move(-Y /*- X*/ - Z); //the back left motor moves according to 'left' values
+ 	    driveRF.move(-Y /*- X*/ + Z); //the front right motor moves according to 'right' values
+ 	    driveLF.move(-Y /*+ X*/ - Z); //the front left motor moves according to 'left' values
+ 	    driveRB.move(-Y /*+ X*/ + Z); //the back right motor moves according to 'right' values
     };
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
@@ -31,33 +31,71 @@ void opClass::opControl() {
       return motor.get_actual_velocity(); //return velocity of motor
     };
 //____________________________________________________________________________//
+/////////////////////////////////ROLLERS FUNCTION///////////////////////////////
+//____________________________________________________________________________//
+Controller partner (CONTROLLER_PARTNER);
+  void opClass::Rollers() {
+    int BUILT_DIFFERENT = roller.get_position();
+    if(master.get_digital(DIGITAL_R1)){
+      roller.move(127);
+    }
+    else if(master.get_digital(DIGITAL_R2)){
+      roller.move(-127);
+    }
+    else{roller.move_absolute(BUILT_DIFFERENT,0);}
+  }
+  //____________________________________________________________________________//
+  /////////////////////////////////Right Claw FUNCTION////////////////////////////
+  //____________________________________________________________________________//
+  void opClass::ClawR(){
+    int BUILT_DIFFERENT;
+ 		int error, sumError, diffError, errorLast, output;
+ 		int clawTarget;
+ 		float kP = 0.9;
+ 		float kI = 0;
+ 		float kD = 0;
+ if(partner.get_digital(DIGITAL_R2) || partner.get_digital(DIGITAL_R1)){ //if partner controller is getting digital L1 and L2 values
+	 if (partner.get_digital(DIGITAL_R2)) {clawTarget = 0;} //lower tower arm Proportional Integral Derivative
+	 else if (partner.get_digital(DIGITAL_R1)) {clawTarget = -1000;} //middle tower arm Proportional Integral Derivative
+	 error = clawTarget - rClaw.get_position(); //error value equals arm target minus the arm's current position
+	 sumError += error; //sum error is defined as the error plus the sum of the error
+	 diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+	 rClaw.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
+	 errorLast = error; //error last is defined as error
+}
+else{rClaw.move_absolute(BUILT_DIFFERENT,0);}
+}
+  //____________________________________________________________________________//
+  /////////////////////////////////Right Claw FUNCTION////////////////////////////
+  //____________________________________________________________________________//
+  void opClass::ClawL(){
+    int errorL, sumErrorL, diffErrorL, errorLastL;
+    int clawTargetL;
+    int BUILT_DIFFERENT;
+    float kPL = 0.9;
+    float kIL = 0.0;
+    float kDL = 0.0;
+    	while (true) {
+    	if(partner.get_digital(DIGITAL_L2) || partner.get_digital(DIGITAL_L1)){ //if partner controller is getting digital L1 and L2 values
+    		if (partner.get_digital(DIGITAL_L2)) {clawTargetL = 0;} //lower tower arm Proportional Integral Derivative
+    		else if (partner.get_digital(DIGITAL_L1)) {clawTargetL = -1000;} //middle tower arm Proportional Integral Derivative
+    			errorL = clawTargetL - lClaw.get_position(); //error value equals arm target minus the arm's current position
+    			sumErrorL += errorL; //sum error is defined as the error plus the sum of the error
+    			diffErrorL = errorL - errorLastL; //difference in error is equal to error minus the last error, which is also defined as error
+    				lClaw.move((errorL * kPL) + (sumErrorL * kIL) + (diffErrorL * kDL));
+    			errorLastL = errorL; //error last is defined as error
+    		}
+    		else{lClaw.move_absolute(BUILT_DIFFERENT, 0);}}}
+//____________________________________________________________________________//
 //////////////////////////ACCELERATION DRIVE FUNC///////////////////////////////
 //____________________________________________________________________________//
 void AccTask_fn(void*par) {
+  rClaw.tare_position();
   while (true) {
-    int n; //change to n = (port number) when using
-    Motor motor (n); //placeholder; can replace with actual motor name
-    int time; //replace with time in ms to change how long acceleration takes
-    int velCap; //placeholder; can replace with actual number that represents motor velocity cap
-    int motorVel;
-    //int i; i < velCap;
-    //int incFactor;
-
-    if (master.get_digital(DIGITAL_A)){ //if A button is pressed
-      for (true; motor.get_actual_velocity() < velCap; motorVel ++) { //"true" used to be: motor.get_actual_velocity() = i
-        motor.move_velocity(motorVel); //motor speed acceleration/ramping
-      }
-      //if motor velocity IS above velocity cap:
-      motor.move_velocity(velCap); //
-    }
-    else {}
-    delay(time); //time controls how fast motor speeds up; i.e. if time = 1 motor takes 200ms to reach full speed, if it's 2, it takes 400ms, etc.
-    //will find minimum time (time that it naturally takes a motor to accelerate) because 'time' value should not go below it
-    //^^will do the above when I have access to a robot
+    opClass movingParts;
+    movingParts.ClawR();
   }
 }
-//example of use on main.cpp
-
 //____________________________________________________________________________//
 /////////////////////////////////STOP FUNC//////////////////////////////////////
 //____________________________________________________________________________//
@@ -106,7 +144,7 @@ void dpidClass::movePID(int direction, int target, int timeout, int cap) {
         if(power > cap){power = cap;} //cap motor speed
         if(power < -cap){power = -cap;}
 
-        delay(20);
+        delay(10);
   	}
 };
 //____________________________________________________________________________//
@@ -150,7 +188,7 @@ void dpidClass::turnPID(int direction, int target, int timeout) {
         /*if(power > cap){power = cap;} //cap motor speed
         if(power < -cap){power = -cap;}*/
 
-        delay(20);
+        delay(10);
   	}
 };
 //____________________________________________________________________________//
@@ -192,7 +230,7 @@ void dpidClass::strafePID(int direction, int target, int timeout, int cap) {
         if(power > cap){power = cap;} //cap motor speed
         if(power < -cap){power = -cap;}
 
-        delay(20);
+        delay(10);
   	}
 }
     //examples on main.cpp

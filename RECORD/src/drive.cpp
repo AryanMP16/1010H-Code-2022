@@ -15,7 +15,7 @@ int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
   int power = joystkSign * (motorMin + (127 - motorMin) * pow(joyLive, driveExpon) / pow(joyMax, driveExpon));
   return power;}
 //testing upload to github
-void opClass::opControl() { 
+void opClass::opControl() {
     int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
  		//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
  		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
@@ -106,7 +106,7 @@ void dpidClass::movePID(int direction, int target, int timeout, int cap) {
         if(power > cap){power = cap;} //cap motor speed
         if(power < -cap){power = -cap;}
 
-        delay(20);
+        delay(10);
   	}
 };
 //____________________________________________________________________________//
@@ -150,7 +150,7 @@ void dpidClass::turnPID(int direction, int target, int timeout) {
         /*if(power > cap){power = cap;} //cap motor speed
         if(power < -cap){power = -cap;}*/
 
-        delay(20);
+        delay(10);
   	}
 };
 //____________________________________________________________________________//
@@ -192,7 +192,7 @@ void dpidClass::strafePID(int direction, int target, int timeout, int cap) {
         if(power > cap){power = cap;} //cap motor speed
         if(power < -cap){power = -cap;}
 
-        delay(20);
+        delay(10);
   	}
 }
     //examples on main.cpp

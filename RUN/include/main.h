@@ -72,6 +72,7 @@ using namespace std;
 
 //Controller
  extern Controller master;
+ extern Controller partner;
 
  //Objects
  extern dpidClass chassis;
@@ -84,6 +85,10 @@ using namespace std;
  extern Motor driveRF;
  extern Motor driveLB;
  extern Motor driveLF;
+ extern Motor lClaw;
+ extern Motor rClaw;
+ extern Motor roller;
+ extern Motor futureUse4;
 
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus

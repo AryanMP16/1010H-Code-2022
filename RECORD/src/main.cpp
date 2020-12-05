@@ -20,10 +20,14 @@ void on_center_button() {
 	opClass base;
 
 //motors
-	Motor driveLF(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRF(2, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRB(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveLB(4, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveLF(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveRF(2, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor driveRB(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor driveLB(4, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor futureUse1(5, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor futureUse2(6, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor futureUse3(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor futureUse4(8, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 //tasks
 pros::Task acc_task(
 	AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "TEST_TASK"
@@ -112,6 +116,10 @@ void opcontrol() {
  				fprintf(file, "%f\n", getVelocity(driveRF)); //recording from the right front drive motor
  				fprintf(file, "%f\n", getVelocity(driveLB)); //recording from the left back drive motor
  				fprintf(file, "%f\n", getVelocity(driveLF)); //recording from the left back drive motor
+				fprintf(file, "%f\n", getVelocity(futureUse1)); //recording from the right back drive motor
+				fprintf(file, "%f\n", getVelocity(futureUse2)); //recording from the right front drive motor
+				fprintf(file, "%f\n", getVelocity(futureUse3)); //recording from the left back drive motor
+				fprintf(file, "%f\n", getVelocity(futureUse4)); //recording from the left back drive motor
 
 		base.opControl();
 

@@ -79,10 +79,14 @@ using namespace std;
 //Task
  extern Task acc_task;
 //Motors
- extern Motor driveRB;
- extern Motor driveRF;
- extern Motor driveLB;
- extern Motor driveLF;
+extern Motor driveRB;
+extern Motor driveRF;
+extern Motor driveLB;
+extern Motor driveLF;
+extern Motor futureUse1;
+extern Motor futureUse2;
+extern Motor futureUse3;
+extern Motor futureUse4;
 
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
