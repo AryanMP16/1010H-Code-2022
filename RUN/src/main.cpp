@@ -49,7 +49,6 @@ void opcontrol() {
 	while (true) {
 		base.opControl();
 		movingParts.Rollers();
-		movingParts.ClawL();
 		pros::delay(10);
 		time +=10;
 	}

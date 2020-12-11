@@ -43,34 +43,26 @@
 //includes
 #include "api.h"
 #include "drive.h"
+#include "okapi/api.hpp"
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include <time.h>
 
-/**
- * You should add more #includes here
- */
-//#include "okapi/api.hpp"
-//#include "pros/api_legacy.h"
-
-/**
- * If you find doing pros::Motor() to be tedious and you'd prefer just to do
- * Motor, you can use the namespace with the following commented out line.
- *
- * IMPORTANT: Only the okapi or pros namespace may be used, not both
- * concurrently! The okapi namespace will export all symbols inside the pros
- * namespace.
- */
+static std::string RUNFILE= "/usd/1010H.txt";
+static std::string SAVEFOLDER= "Savefile";
+//namespaces
 using namespace pros;
 using namespace std;
-// using namespace pros::literals;
-// using namespace okapi;
-//externs
-/**
- * Prototypes for the competition control tasks are redefined here to ensure
- * that they can be called from user code (i.e. calling autonomous from a
- * button press in opcontrol() for testing purposes).
- */
+//rerun stuff
+static string RUNF = "RUNF.txt";
 
 //Controller
  extern Controller master;
+ extern Controller partner;
 
  //Objects
  extern dpidClass chassis;
@@ -79,14 +71,14 @@ using namespace std;
 //Task
  extern Task acc_task;
 //Motors
-extern Motor driveRB;
-extern Motor driveRF;
-extern Motor driveLB;
-extern Motor driveLF;
-extern Motor futureUse1;
-extern Motor futureUse2;
-extern Motor futureUse3;
-extern Motor futureUse4;
+ extern Motor driveRB;
+ extern Motor driveRF;
+ extern Motor driveLB;
+ extern Motor driveLF;
+ extern Motor lClaw;
+ extern Motor rClaw;
+ extern Motor roller;
+ extern Motor futureUse4;
 
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus

@@ -45,22 +45,13 @@
 #include "drive.h"
 #include "run.h"
 
-/**
- * You should add more #includes here
- */
-//#include "okapi/api.hpp"
-//#include "pros/api_legacy.h"
-
-/**
- * If you find doing pros::Motor() to be tedious and you'd prefer just to do
- * Motor, you can use the namespace with the following commented out line.
- *
- * IMPORTANT: Only the okapi or pros namespace may be used, not both
- * concurrently! The okapi namespace will export all symbols inside the pros
- * namespace.
- */
+static std::string RUNFILE= "/usd/1010H.txt";
+static std::string SAVEFOLDER= "Savefile";
+//namespaces
 using namespace pros;
 using namespace std;
+//rerun stuff
+static string RUNF = "RUNF.txt";
 // using namespace pros::literals;
 // using namespace okapi;
 //externs

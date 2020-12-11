@@ -15,6 +15,9 @@ public:
     void opControl(void); //op control drive (expo drive)
     //void moveAt (Motor motor, int accFactor, int velCap);
     void temperatureControl(void); //temperature control function
+    void Rollers(void); //roller function
+    void ClawR(void); //right claw function
+    void ClawL(void); //left claw function
 };
 
 double getVelocity(Motor motor); //for getting motor velocity
