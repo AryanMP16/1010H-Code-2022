@@ -49,6 +49,7 @@ void opcontrol() {
 	while (true) {
 		base.opControl();
 		movingParts.Rollers();
+		if(master.get_digital(DIGITAL_L1)){futureUse4.move(127);}else if(master.get_digital(DIGITAL_L2)){futureUse4.move(-127);}else{futureUse4.move(0);}
 		pros::delay(10);
 		time +=10;
 	}

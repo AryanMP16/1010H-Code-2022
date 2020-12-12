@@ -51,9 +51,7 @@ Controller partner (CONTROLLER_PARTNER);
 //////////////////////////ACCELERATION DRIVE FUNC///////////////////////////////
 //____________________________________________________________________________//
 void AccTask_fn(void*par) {
-  rClaw.tare_position();
-  lClaw.tare_position();
-  while (true) {
+  while(true){
     int error, sumError, diffError, errorLast, output;
     int clawTarget;
     int BUILT_DIFFERENT;
@@ -71,23 +69,24 @@ void AccTask_fn(void*par) {
       errorLast = error; //error last is defined as error
     }
     else{rClaw.move_absolute(BUILT_DIFFERENT, 0);}
-//######################################################################
-      int errorL, sumErrorL, diffErrorL, errorLastL;
-      int clawTargetL;
-      float kPL = 0.9;
-      float kIL = 0.0;
-      float kDL = 0.0;
-        if(partner.get_digital(DIGITAL_LEFT) || partner.get_digital(DIGITAL_RIGHT) || partner.get_digital(DIGITAL_UP)){ //if partner controller is getting digital L1 and L2 values
-          if (partner.get_digital(DIGITAL_RIGHT)) {clawTargetL = 0;} //lower tower arm Proportional Integral Derivative
-          else if (partner.get_digital(DIGITAL_LEFT)) {clawTargetL = -1000;}
-          else if (partner.get_digital(DIGITAL_UP)) {clawTargetL = -500;} //middle tower arm Proportional Integral Derivative
-            errorL = clawTargetL - lClaw.get_position(); //error value equals arm target minus the arm's current position
-            sumErrorL += errorL; //sum error is defined as the error plus the sum of the error
-            diffErrorL = errorL - errorLastL; //difference in error is equal to error minus the last error, which is also defined as error
-              lClaw.move((errorL * kPL) + (sumErrorL * kIL) + (diffErrorL * kDL));
-            errorLastL = errorL; //error last is defined as error
-          }
-          else{lClaw.move_absolute(BUILT_DIFFERENT, 0);}}};
+//##################################################################################
+int errorL, sumErrorL, diffErrorL, errorLastL;
+int clawTargetL;
+float kPL = 0.9;
+float kIL = 0.0;
+float kDL = 0.0;
+  if(partner.get_digital(DIGITAL_LEFT) || partner.get_digital(DIGITAL_RIGHT) || partner.get_digital(DIGITAL_UP)){ //if partner controller is getting digital L1 and L2 values
+    if (partner.get_digital(DIGITAL_RIGHT)) {clawTargetL = 0;} //lower tower arm Proportional Integral Derivative
+    else if (partner.get_digital(DIGITAL_LEFT)) {clawTargetL = -1000;}
+    else if (partner.get_digital(DIGITAL_UP)) {clawTargetL = -500;} //middle tower arm Proportional Integral Derivative
+      errorL = clawTargetL - lClaw.get_position(); //error value equals arm target minus the arm's current position
+      sumErrorL += errorL; //sum error is defined as the error plus the sum of the error
+      diffErrorL = errorL - errorLastL; //difference in error is equal to error minus the last error, which is also defined as error
+        lClaw.move((errorL * kPL) + (sumErrorL * kIL) + (diffErrorL * kDL));
+      errorLastL = errorL; //error last is defined as error
+    }
+    else{lClaw.move_absolute(BUILT_DIFFERENT, 0);}
+  }};
 //____________________________________________________________________________//
 /////////////////////////////////STOP FUNC//////////////////////////////////////
 //____________________________________________________________________________//

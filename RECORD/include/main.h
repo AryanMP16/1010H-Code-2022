@@ -59,6 +59,9 @@ using namespace pros;
 using namespace std;
 //rerun stuff
 static string RUNF = "RUNF.txt";
+//ints
+int clawStat;
+int clawTarget;
 
 //Controller
  extern Controller master;

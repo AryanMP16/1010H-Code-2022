@@ -21,5 +21,11 @@ public:
 };
 
 double getVelocity(Motor motor); //for getting motor velocity
+double getPID(int clawTarget);
 void AccTask_fn(void*par); //task for motor acceleration
 int getTemperature(Motor motor); //for getting motor temperature
+
+extern int clawStat;
+#define IN 0
+#define MID 1
+#define OUT 2

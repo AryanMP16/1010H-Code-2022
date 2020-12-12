@@ -1,4 +1,5 @@
 #include "main.h"
+#include "drive.h"
 
 void on_center_button() {
 	static bool pressed = false;
@@ -46,19 +47,54 @@ void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w");
 		int time = 0;
 	while (time < 14500) {
+		switch(clawStat){
+			case IN:
+				clawTarget = 0;
+				break;
+
+			case MID:
+				clawTarget = -500;
+				break;
+
+			case OUT:
+				clawTarget = -1000;
+				break;
+
+			default:
+				clawStat = IN;
+				break;
+		};
+
 		fprintf(file, "%f\n", getVelocity(driveRB));
 		fprintf(file, "%f\n", getVelocity(driveLB));
 		fprintf(file, "%f\n", getVelocity(driveRF));
 		fprintf(file, "%f\n", getVelocity(driveLF));
-		fprintf(file, "%f\n", getVelocity(lClaw));
-		fprintf(file, "%f\n", getVelocity(rClaw));
+		fprintf(file, "%i\n", clawStat);
 		fprintf(file, "%f\n", getVelocity(roller));
 		fprintf(file, "%f\n", getVelocity(futureUse4));
+
+		if(master.get_digital(DIGITAL_L1))
+			futureUse4.move(127);
+		else if(master.get_digital(DIGITAL_L2))
+			futureUse4.move(-127);
+		else
+			futureUse4.move(0);
+
 		base.opControl();
 		movingParts.Rollers();
+		printf("%d\n", 1);
 		pros::delay(10);
 		time +=10;
 	}
-	if (time > 14500) {driveRB.move_velocity(0);driveLB.move_velocity(0);driveRF.move_velocity(0);driveLF.move_velocity(0);rClaw.move_velocity(0);lClaw.move_velocity(0);roller.move_velocity(0);futureUse4.move_velocity(0);}
+	if (time > 14500) {
+		driveRB.move_velocity(0);
+		driveLB.move_velocity(0);
+		driveRF.move_velocity(0);
+		driveLF.move_velocity(0);
+		rClaw.move_velocity(0);
+		lClaw.move_velocity(0);
+		roller.move_velocity(0);
+		futureUse4.move_velocity(0);
+	}
 	fclose(file);
 }

@@ -3,7 +3,8 @@
 
 void Run() { //the main run loop
   FILE *fp = fopen("/usd/1010H.txt", "r"); //open an fp file called "/usd/1010H.txt", and read from it
-  static float m1, m2, m3, m4, m5, m6, m7, m8; //these are placeholders for motor velocities
+  static float m1, m2, m3, m4, m7, m8; //these are placeholders for motor velocities
+  static int p5, p6;
   while (true) { //main while loop
 //closes file after all the motors have stopped (AFTER AUTO)
       if (feof(fp)) { //if the end of the recording file is reached, do not move the motors anymroe
@@ -32,23 +33,38 @@ void Run() { //the main run loop
             fclose(fp); //do not move the right back drive motor as the end of the file has been reached
             delay(100); //do not move the right back drive motor as the end of the file has been reached
       }
-
+int clawTarget;
+int clawTargetL;
+int error, sumError, diffError, errorLast, output;
+int BUILT_DIFFERENT;
+float kP = 0.9;
+float kI = 0;
+float kD = 0;
+int errorL, sumErrorL, diffErrorL, errorLastL;
+float kPL = 0.9;
+float kIL = 0.0;
+float kDL = 0.0;
 //reading from the array
-    fscanf(fp, "%f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m6, &m7, &m8); //read a stream and format the file
-//moving motors using array values
-//printf("%f\n", m1); //print the values of the right back motor to the serial terminal for testing purposes
-//drive motors
-  driveLB.move_velocity(m2); //read the motor velocities from the left back motor and play them back
-  driveRB.move_velocity(m1); //read the motor velocities from the right back motor and play them back
-  driveLF.move_velocity(m4); //read the motor velocities from the left front motor and play them back
-  driveRF.move_velocity(m3); //read the motor velocities from the right front motor and play them back
-  //roller motor
-  roller.move_velocity(m7); //read the motor velocities from the angler motor and play them back
-  //intakes
-  lClaw.move_velocity(m5); //read the motor velocities from the left intake motor and play them back
-  rClaw.move_velocity(m6); //read the motor velocities from the right intake motor and play them back
-//arm motor
-  futureUse4.move_velocity(m8); //read the motor velocities from the arm motor and play them back////////////////////////////////////////
+    fscanf(fp, "%f %f %f %f %i %i %f %f", &m1, &m2, &m3, &m4, &p5, &p6, &m7, &m8); //read a stream and format the file
+    driveLB.move_velocity(m2);
+    driveRB.move_velocity(m1);
+    driveLF.move_velocity(m4);
+    driveRF.move_velocity(m3);
+    ////////////////////////////////
+        error = p6 - rClaw.get_position(); //error value equals arm target minus the arm's current position
+        sumError += error; //sum error is defined as the error plus the sum of the error
+        diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+        rClaw.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
+        errorLast = error; //error last is defined as error
+        //
+        errorL = p5 - lClaw.get_position(); //error value equals arm target minus the arm's current position
+        sumErrorL += errorL; //sum error is defined as the error plus the sum of the error
+        diffErrorL = errorL - errorLastL; //difference in error is equal to error minus the last error, which is also defined as error
+        lClaw.move((errorL * kPL) + (sumErrorL * kIL) + (diffErrorL * kDL));
+        errorLastL = errorL; //error last is defined as error
+    ////////////////////////////////
+    roller.move_velocity(m7);
+    futureUse4.move_velocity(m8);
   delay(10); //delay 10 milliseconds so as to balance the 10 millisecond delay in the record files
 }
 }
