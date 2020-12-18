@@ -69,6 +69,10 @@ static string RUNF = "RUNF.txt";
  extern dpidClass chassis;
  extern opClass base;
 
+ //globals
+ extern int clawTarget;
+ extern int clawStat;
+
 //Task
  extern Task acc_task;
 //Motors

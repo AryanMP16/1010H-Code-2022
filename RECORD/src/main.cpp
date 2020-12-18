@@ -47,22 +47,22 @@ void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w");
 		int time = 0;
 	while (time < 14500) {
-		printf("%s\n", std::to_string(clawStat).c_str());
+		printf("%i\n", clawStat);
 		switch(clawStat){
-			case IN:
+			case 1:
 				clawTarget = 0;
 				break;
 
-			case MID:
+			case 2:
 				clawTarget = -500;
 				break;
 
-			case OUT:
+			case 3:
 				clawTarget = -1000;
 				break;
 
 			default:
-				clawStat = IN;
+				clawStat = 1;
 				break;
 		};
 

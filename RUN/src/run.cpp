@@ -1,6 +1,6 @@
 #include "main.h" //include the main.h file to access all of the namespaces and includes
 #include "run.h" //include the run.h file to access all of the functions and the main.h file
-
+ 
 void Run() { //the main run loop
   FILE *fp = fopen("/usd/1010H.txt", "r"); //open an fp file called "/usd/1010H.txt", and read from it
   static float m1, m2, m3, m4, m7, m8; //these are placeholders for motor velocities
@@ -33,17 +33,7 @@ void Run() { //the main run loop
             fclose(fp); //do not move the right back drive motor as the end of the file has been reached
             delay(100); //do not move the right back drive motor as the end of the file has been reached
       }
-int clawTarget;
-int clawTargetL;
-int error, sumError, diffError, errorLast, output;
-int BUILT_DIFFERENT;
-float kP = 0.9;
-float kI = 0;
-float kD = 0;
-int errorL, sumErrorL, diffErrorL, errorLastL;
-float kPL = 0.9;
-float kIL = 0.0;
-float kDL = 0.0;
+
 //reading from the array
     fscanf(fp, "%f %f %f %f %i %i %f %f", &m1, &m2, &m3, &m4, &p5, &p6, &m7, &m8); //read a stream and format the file
     driveLB.move_velocity(m2);
@@ -51,17 +41,7 @@ float kDL = 0.0;
     driveLF.move_velocity(m4);
     driveRF.move_velocity(m3);
     ////////////////////////////////
-        error = p6 - rClaw.get_position(); //error value equals arm target minus the arm's current position
-        sumError += error; //sum error is defined as the error plus the sum of the error
-        diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
-        rClaw.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
-        errorLast = error; //error last is defined as error
-        //
-        errorL = p5 - lClaw.get_position(); //error value equals arm target minus the arm's current position
-        sumErrorL += errorL; //sum error is defined as the error plus the sum of the error
-        diffErrorL = errorL - errorLastL; //difference in error is equal to error minus the last error, which is also defined as error
-        lClaw.move((errorL * kPL) + (sumErrorL * kIL) + (diffErrorL * kDL));
-        errorLastL = errorL; //error last is defined as error
+    clawStat = p5;
     ////////////////////////////////
     roller.move_velocity(m7);
     futureUse4.move_velocity(m8);

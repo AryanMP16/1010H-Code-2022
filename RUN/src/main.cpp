@@ -47,6 +47,25 @@ void opcontrol() {
 		int time;
 		time = 0;
 	while (true) {
+
+		switch(clawStat){
+			case 1:
+				clawTarget = 0;
+				break;
+
+			case 2:
+				clawTarget = -500;
+				break;
+
+			case 3:
+				clawTarget = -1000;
+				break;
+
+			default:
+				clawStat = 1;
+				break;
+		};
+
 		base.opControl();
 		movingParts.Rollers();
 		if(master.get_digital(DIGITAL_L1)){futureUse4.move(127);}else if(master.get_digital(DIGITAL_L2)){futureUse4.move(-127);}else{futureUse4.move(0);}
