@@ -4,24 +4,6 @@
 void Run() { //the main run loop
   FILE *fp = fopen("/usd/1010H.txt", "r"); //open an fp file called "/usd/1010H.txt", and read from it
 
-  switch(clawStat){
-    case 1:
-      clawTarget = 0;
-      break;
-
-    case 2:
-      clawTarget = -500;
-      break;
-
-    case 3:
-      clawTarget = -1000;
-      break;
-
-    default:
-      clawStat = 1;
-      break;
-  };
-
   static float m1, m2, m3, m4, m6, m7; //these are placeholders for motor velocities
   static int p5;
   while (true) { //main while loop
@@ -52,6 +34,24 @@ void Run() { //the main run loop
             fclose(fp); //do not move the right back drive motor as the end of the file has been reached
             delay(100); //do not move the right back drive motor as the end of the file has been reached
       }
+
+      switch(p5){
+        case 1:
+          clawTarget = 0;
+          break;
+
+        case 2:
+          clawTarget = -500;
+          break;
+
+        case 3:
+          clawTarget = -1000;
+          break;
+
+        default:
+          clawStat = 1;
+          break;
+      };
 
 //reading from the array
     fscanf(fp, "%f %f %f %f %i %f %f", &m1, &m2, &m3, &m4, &p5, &m6, &m7); //read a stream and format the file
