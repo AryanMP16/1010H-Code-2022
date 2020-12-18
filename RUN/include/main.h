@@ -70,8 +70,8 @@ static string RUNF = "RUNF.txt";
  extern opClass base;
 
  //globals
- extern int clawTarget;
- extern int clawStat;
+ extern int clawTargetR;
+ extern int clawTargetL;
 
 //Task
  extern Task acc_task;

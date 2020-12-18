@@ -1,15 +1,9 @@
 #include "main.h"
 #include "drive.h"
 
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
+int clawTargetR;
+int clawTargetL;
+
 	//drive objects
 	dpidClass chassis;
 	opClass base;
@@ -26,8 +20,6 @@ void on_center_button() {
 
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "falsdkfjalsdkjflaskfjaslkdfj");
-	pros::lcd::register_btn1_cb(on_center_button);
 //motors
 	driveLB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveRF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
@@ -47,30 +39,13 @@ void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w");
 		int time = 0;
 	while (time < 14500) {
-		printf("%i\n", clawStat);
-		switch(clawStat){
-			case 1:
-				clawTarget = 0;
-				break;
-
-			case 2:
-				clawTarget = -500;
-				break;
-
-			case 3:
-				clawTarget = -1000;
-				break;
-
-			default:
-				clawStat = 1;
-				break;
-		};
 
 		fprintf(file, "%f\n", getVelocity(driveRB));
 		fprintf(file, "%f\n", getVelocity(driveLB));
 		fprintf(file, "%f\n", getVelocity(driveRF));
 		fprintf(file, "%f\n", getVelocity(driveLF));
-		fprintf(file, "%i\n", clawStat);
+		fprintf(file, "%i\n", clawTargetR);
+		fprintf(file, "%i\n", clawTargetL);
 		fprintf(file, "%f\n", getVelocity(roller));
 		fprintf(file, "%f\n", getVelocity(futureUse4));
 

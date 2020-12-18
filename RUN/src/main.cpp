@@ -48,23 +48,6 @@ void opcontrol() {
 		time = 0;
 	while (true) {
 
-		switch(clawStat){
-			case 1:
-				clawTarget = 0;
-				break;
-
-			case 2:
-				clawTarget = -500;
-				break;
-
-			case 3:
-				clawTarget = -1000;
-				break;
-
-			default:
-				clawStat = 1;
-				break;
-		};
 
 		base.opControl();
 		movingParts.Rollers();

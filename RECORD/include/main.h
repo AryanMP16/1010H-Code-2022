@@ -60,8 +60,9 @@ using namespace std;
 //rerun stuff
 static string RUNF = "RUNF.txt";
 //ints
-extern int clawTarget;
-extern int clawStat;
+//globals
+extern int clawTargetR;
+extern int clawTargetL;
 
 //Controller
  extern Controller master;
