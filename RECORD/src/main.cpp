@@ -47,6 +47,7 @@ void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w");
 		int time = 0;
 	while (time < 14500) {
+		printf("%s\n", std::to_string(clawStat).c_str());
 		switch(clawStat){
 			case IN:
 				clawTarget = 0;
@@ -82,7 +83,6 @@ void opcontrol() {
 
 		base.opControl();
 		movingParts.Rollers();
-		printf("%d\n", 1);
 		pros::delay(10);
 		time +=10;
 	}
