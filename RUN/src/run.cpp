@@ -1,10 +1,29 @@
 #include "main.h" //include the main.h file to access all of the namespaces and includes
 #include "run.h" //include the run.h file to access all of the functions and the main.h file
- 
+
 void Run() { //the main run loop
   FILE *fp = fopen("/usd/1010H.txt", "r"); //open an fp file called "/usd/1010H.txt", and read from it
-  static float m1, m2, m3, m4, m7, m8; //these are placeholders for motor velocities
-  static int p5, p6;
+
+  switch(clawStat){
+    case 1:
+      clawTarget = 0;
+      break;
+
+    case 2:
+      clawTarget = -500;
+      break;
+
+    case 3:
+      clawTarget = -1000;
+      break;
+
+    default:
+      clawStat = 1;
+      break;
+  };
+
+  static float m1, m2, m3, m4, m6, m7; //these are placeholders for motor velocities
+  static int p5;
   while (true) { //main while loop
 //closes file after all the motors have stopped (AFTER AUTO)
       if (feof(fp)) { //if the end of the recording file is reached, do not move the motors anymroe
@@ -35,7 +54,7 @@ void Run() { //the main run loop
       }
 
 //reading from the array
-    fscanf(fp, "%f %f %f %f %i %i %f %f", &m1, &m2, &m3, &m4, &p5, &p6, &m7, &m8); //read a stream and format the file
+    fscanf(fp, "%f %f %f %f %i %f %f", &m1, &m2, &m3, &m4, &p5, &m6, &m7); //read a stream and format the file
     driveLB.move_velocity(m2);
     driveRB.move_velocity(m1);
     driveLF.move_velocity(m4);
@@ -43,8 +62,8 @@ void Run() { //the main run loop
     ////////////////////////////////
     clawStat = p5;
     ////////////////////////////////
-    roller.move_velocity(m7);
-    futureUse4.move_velocity(m8);
+    roller.move_velocity(m6);
+    futureUse4.move_velocity(m7);
   delay(10); //delay 10 milliseconds so as to balance the 10 millisecond delay in the record files
 }
 }
