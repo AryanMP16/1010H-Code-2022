@@ -41,18 +41,18 @@ Controller partner (CONTROLLER_PARTNER);
 
   void opClass::Rollers() {
 
-    if(master.get_digital(DIGITAL_X))
-      clawTargetR = -500;
-    else if(master.get_digital(DIGITAL_A))
-      clawTargetR = -1000;
-    else if(master.get_digital(DIGITAL_B))
+    if(partner.get_digital(DIGITAL_X))
+      clawTargetR = -575;
+    else if(partner.get_digital(DIGITAL_A))
+      clawTargetR = -1040;
+    else if(partner.get_digital(DIGITAL_Y))
       clawTargetR = 0;
 
-    if(master.get_digital(DIGITAL_UP))
-      clawTargetL = -500;
-    else if(master.get_digital(DIGITAL_LEFT))
-      clawTargetL = -1000;
-    else if(master.get_digital(DIGITAL_RIGHT))
+    if(partner.get_digital(DIGITAL_UP))
+      clawTargetL = -575;
+    else if(partner.get_digital(DIGITAL_LEFT))
+      clawTargetL = -1040;
+    else if(partner.get_digital(DIGITAL_RIGHT))
       clawTargetL = 0;
 
     int BUILT_DIFFERENT = roller.get_position();

@@ -1,9 +1,6 @@
 #include "main.h"
 #include "drive.h"
 
-int clawTargetR;
-int clawTargetL;
-
 	//drive objects
 	dpidClass chassis;
 	opClass base;
@@ -60,6 +57,7 @@ void opcontrol() {
 		movingParts.Rollers();
 		pros::delay(10);
 		time +=10;
+		printf("%i\n", clawTargetL);
 	}
 	if (time > 14500) {
 		driveRB.move_velocity(0);
