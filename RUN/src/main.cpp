@@ -47,7 +47,7 @@ ADIAnalogIn crashSensor ('A');
 void opcontrol() {
 		int time;
 		time = 0;
-		master.print(0,0,"MONKE ANAL");
+		master.print(0,0,"DRINK BANANE. REVERT TO MONKE");
 	while (true) {
 		base.opControl();
 		movingParts.Rollers();
