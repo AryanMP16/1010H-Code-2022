@@ -38,23 +38,7 @@ void opClass::opControl() {
 /////////////////////////////////ROLLERS FUNCTION///////////////////////////////
 //____________________________________________________________________________//
 Controller partner (CONTROLLER_PARTNER);
-
   void opClass::Rollers() {
-
-    if(partner.get_digital(DIGITAL_X))
-      clawTargetR = -575;
-    else if(partner.get_digital(DIGITAL_A))
-      clawTargetR = -1040;
-    else if(partner.get_digital(DIGITAL_Y))
-      clawTargetR = 0;
-
-    if(partner.get_digital(DIGITAL_UP))
-      clawTargetL = -575;
-    else if(partner.get_digital(DIGITAL_LEFT))
-      clawTargetL = -1040;
-    else if(partner.get_digital(DIGITAL_RIGHT))
-      clawTargetL = 0;
-
     int BUILT_DIFFERENT = roller.get_position();
     if(master.get_digital(DIGITAL_R1)){
       roller.move(127);
@@ -68,38 +52,18 @@ Controller partner (CONTROLLER_PARTNER);
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
   //____________________________________________________________________________//
 void AccTask_fn(void*par) {
-  rClaw.tare_position();
-  lClaw.tare_position();
-
-  clawTargetR = 0;
-  clawTargetL = 0;
-
-  while (true) {
-    int error, sumError, diffError, errorLast, output;
-    int BUILT_DIFFERENT;
-    int errorL, sumErrorL, diffErrorL, errorLastL;
-
-		float kP = 0.9;
-		float kI = 0;
-		float kD = 0;
-
-		error = clawTargetR - rClaw.get_position(); //error value equals arm target minus the arm's current position
-		sumError += error; //sum error is defined as the error plus the sum of the error
-		diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
-		rClaw.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
-		errorLast = error; //error last is defined as error
-
-    float kPL = 0.9;
-    float kIL = 0.0;
-    float kDL = 0.0;
-
-    errorL = clawTargetL - lClaw.get_position(); //error value equals arm target minus the arm's current position
-		sumErrorL += errorL; //sum error is defined as the error plus the sum of the error
-		diffErrorL = errorL - errorLastL; //difference in error is equal to error minus the last error, which is also defined as error
-		lClaw.move((errorL * kPL) + (sumErrorL * kIL) + (diffErrorL * kDL));
-		errorLastL = errorL; //error last is defined as error
-    }
+  while (true) {}
 };
+//____________________________________________________________________________//
+////////////////////////////Don't crash into others/////////////////////////////
+//____________________________________________________________________________//
+bool goingToCrash;
+void dont() {
+  driveLB.move_absolute(driveLB.get_position(),0);
+  driveRF.move_absolute(driveRF.get_position(),0);
+  driveLF.move_absolute(driveLF.get_position(),0);
+  driveRB.move_absolute(driveRB.get_position(),0);
+}
 //____________________________________________________________________________//
 /////////////////////////////////STOP FUNC//////////////////////////////////////
 //____________________________________________________________________________//
@@ -238,24 +202,3 @@ void dpidClass::strafePID(int direction, int target, int timeout, int cap) {
   	}
 }
     //examples on main.cpp
-
-//____________________________________________________________________________//
-////////////////////////////TEMPERATURE CONTROL/////////////////////////////////
-//____________________________________________________________________________//
-  int getTemperature(Motor motor) {
-    return motor.get_temperature();
-  };
-
-  void opClass::temperatureControl() { //this is currently untested because I don't have access to a robot
-    if(getTemperature(driveLB) > 45 || //if any motors' temperatures are over 45 degrees celcius, stop all motors
-      getTemperature(driveLF) > 45 || //^^the number 45 will change once I have a robot to test this on; it is just a placeholder for now
-      getTemperature(driveRB) > 45 ||
-      getTemperature(driveRF) > 45) {
-      driveLB.move(0);
-      driveLF.move(0);
-      driveRB.move(0);
-      driveRF.move(0);
-    }
-
-    else {}
-  };

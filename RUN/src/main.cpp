@@ -14,18 +14,19 @@ void on_center_button() {
 	opClass base;
 	opClass movingParts;
 //motors
-	Motor driveLF(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor futureUse4(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor driveRB(2, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+	Motor lClaw(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+	Motor roller(4, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor rClaw(5, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor driveRF(6, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRB(13, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveLB(5, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor lClaw(9, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor rClaw(11, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor roller(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor futureUse4(20, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor driveLF(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+	Motor driveLB(9, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+
 
 void initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "falsdkfjalsdkjflaskfjaslkdfj");
+	pros::lcd::set_text(1, "DISCLAIMER: This robot has consumed an phat dose of methinphetamine and is therefore required to go ape shit on you");
 	pros::lcd::register_btn1_cb(on_center_button);
 //motors
 	driveLB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
@@ -42,13 +43,28 @@ void competition_initialize() {}
 void autonomous() {
 	Run();
 }
-
+ADIAnalogIn crashSensor ('A');
 void opcontrol() {
 		int time;
 		time = 0;
 	while (true) {
+////////////////////////////////////////////////////////////////////////////////
+		if (partner.get_digital(DIGITAL_R1)){
+			rClaw.move_velocity(-100);
+		}
+		else if (partner.get_digital(DIGITAL_R2)){
+			rClaw.move_velocity(200);
+		}
+		else{rClaw.move_velocity(0);}
 
-
+		if (partner.get_digital(DIGITAL_L1)){
+			lClaw.move_velocity(-100);
+		}
+		else if (partner.get_digital(DIGITAL_L2)){
+			lClaw.move_velocity(200);
+		}
+		else{lClaw.move_velocity(0);}
+////////////////////////////////////////////////////////////////////////////////
 		base.opControl();
 		movingParts.Rollers();
 		if(master.get_digital(DIGITAL_L1)){futureUse4.move(127);}else if(master.get_digital(DIGITAL_L2)){futureUse4.move(-127);}else{futureUse4.move(0);}
