@@ -13,7 +13,7 @@ void on_center_button() {
 	dpidClass chassis;
 	opClass base;
 	opClass movingParts;
-//motors
+	//motors
 	Motor futureUse4(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor driveRB(2, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 	Motor lClaw(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
@@ -28,7 +28,7 @@ void initialize() {
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "DISCLAIMER: This robot has consumed an phat dose of methinphetamine and is therefore required to go ape shit on you");
 	pros::lcd::register_btn1_cb(on_center_button);
-//motors
+	//motors
 	driveLB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveRF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveLF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
@@ -48,26 +48,8 @@ void opcontrol() {
 		int time;
 		time = 0;
 	while (true) {
-////////////////////////////////////////////////////////////////////////////////
-		if (partner.get_digital(DIGITAL_R1)){
-			rClaw.move_velocity(-100);
-		}
-		else if (partner.get_digital(DIGITAL_R2)){
-			rClaw.move_velocity(200);
-		}
-		else{rClaw.move_velocity(0);}
-
-		if (partner.get_digital(DIGITAL_L1)){
-			lClaw.move_velocity(-100);
-		}
-		else if (partner.get_digital(DIGITAL_L2)){
-			lClaw.move_velocity(200);
-		}
-		else{lClaw.move_velocity(0);}
-////////////////////////////////////////////////////////////////////////////////
 		base.opControl();
 		movingParts.Rollers();
-		if(master.get_digital(DIGITAL_L1)){futureUse4.move(127);}else if(master.get_digital(DIGITAL_L2)){futureUse4.move(-127);}else{futureUse4.move(0);}
 		pros::delay(10);
 		time +=10;
 	}

@@ -34,20 +34,37 @@ void opClass::opControl() {
     double getVelocity(Motor motor) {
       return motor.get_actual_velocity(); //return velocity of motor
     };
-//____________________________________________________________________________//
-/////////////////////////////////ROLLERS FUNCTION///////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////ROLLER INTAKE FUNC/////////////////////////////////
 //____________________________________________________________________________//
 Controller partner (CONTROLLER_PARTNER);
-  void opClass::Rollers() {
-    int BUILT_DIFFERENT = roller.get_position();
-    if(master.get_digital(DIGITAL_R1)){
-      roller.move(127);
+void opClass::Rollers() {
+    if (partner.get_digital(DIGITAL_R1)){
+      rClaw.move_velocity(-100);
     }
-    else if(master.get_digital(DIGITAL_R2)){
-      roller.move(-127);
+    else if (partner.get_digital(DIGITAL_R2)){
+      rClaw.move_velocity(200);
     }
-    else{roller.move_absolute(BUILT_DIFFERENT,0);}
-  };
+    else{rClaw.move_velocity(0);}
+
+    if (partner.get_digital(DIGITAL_L1)){
+      lClaw.move_velocity(-100);
+    }
+    else if (partner.get_digital(DIGITAL_L2)){
+      lClaw.move_velocity(200);
+    }
+    else{lClaw.move_velocity(0);}
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////FLYWHEEL (IN ROLLER FUNC)//////////////////////////////
+//____________________________________________________________________________//
+    if(master.get_digital(DIGITAL_L1)){
+      futureUse4.move(127);
+    }
+    else if(master.get_digital(DIGITAL_L2)){
+      futureUse4.move(-127);
+    }
+    else{futureUse4.move(0);}
+  }
   //____________________________________________________________________________//
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
   //____________________________________________________________________________//

@@ -22,5 +22,4 @@ public:
 
 double getVelocity(Motor motor); //for getting motor velocity
 void AccTask_fn(void*par); //task for motor acceleration
-void dont(void);
 int getTemperature(Motor motor); //for getting motor temperature
