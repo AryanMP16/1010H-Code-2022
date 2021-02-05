@@ -35,7 +35,7 @@ void autonomous() {
 void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w");
 		int time = 0;
-	while (time < 59500) {
+	while (time < 14500) {
 
 		fprintf(file, "%f\n", getVelocity(driveRB));
 		fprintf(file, "%f\n", getVelocity(driveLB));
@@ -46,18 +46,11 @@ void opcontrol() {
 		fprintf(file, "%f\n", getVelocity(roller));
 		fprintf(file, "%f\n", getVelocity(futureUse4));
 
-		if(master.get_digital(DIGITAL_L1))
-			futureUse4.move(127);
-		else if(master.get_digital(DIGITAL_L2))
-			futureUse4.move(-127);
-		else
-			futureUse4.move(0);
-
 		base.opControl();
 		movingParts.Rollers();
+		
 		pros::delay(10);
 		time +=10;
-		printf("%i\n", clawTargetL);
 	}
 	if (time > 14500) {
 		driveRB.move_velocity(0);

@@ -72,6 +72,7 @@ static string RUNF = "RUNF.txt";
  //globals
  extern int clawTargetR;
  extern int clawTargetL;
+ extern bool goingToCrash;
 
 //Task
  extern Task acc_task;
