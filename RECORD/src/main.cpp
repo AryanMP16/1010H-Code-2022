@@ -6,14 +6,14 @@
 	opClass base;
 	opClass movingParts;
 //motors
-	Motor driveLF(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRF(6, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveRB(13, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor driveLB(5, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor lClaw(9, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor rClaw(11, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor roller(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-	Motor futureUse4(20, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor futureUse4(1, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveRB(2, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor lClaw(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor roller(4, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor rClaw(5, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveRF(6, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor driveLF(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveLB(9, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 
 void initialize() {
 	pros::lcd::initialize();
@@ -33,27 +33,35 @@ void autonomous() {
 }
 
 void opcontrol() {
-	FILE* file = fopen("/usd/1010H.txt", "w");
-		int time = 0;
-	while (time < 14500) {
+	FILE* file = fopen("/usd/1010H.txt", "w"); //open a file named 1010H
+		int time = 0; //reset timer
 
-		fprintf(file, "%f\n", getVelocity(driveRB));
-		fprintf(file, "%f\n", getVelocity(driveLB));
-		fprintf(file, "%f\n", getVelocity(driveRF));
-		fprintf(file, "%f\n", getVelocity(driveLF));
-		fprintf(file, "%i\n", clawTargetR);
-		fprintf(file, "%i\n", clawTargetL);
-		fprintf(file, "%f\n", getVelocity(roller));
-		fprintf(file, "%f\n", getVelocity(futureUse4));
+	while (time < 14500) { //if less than 14.5 seconds has elapsed...
 
-		base.opControl();
-		movingParts.Rollers();
-		
-		pros::delay(10);
-		time +=10;
+		fprintf(file, "%f\n", getVelocity(driveRB)); //record velocity values for drive base motors
+		fprintf(file, "%f\n", getVelocity(driveLB)); //record velocity values for drive base motors
+		fprintf(file, "%f\n", getVelocity(driveRF)); //record velocity values for drive base motors
+		fprintf(file, "%f\n", getVelocity(driveLF)); //record velocity values for drive base motors
+		fprintf(file, "%f\n", getVelocity(rClaw)); //record velocity values for intake motors
+		fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
+		fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
+		fprintf(file, "%f\n", getVelocity(futureUse4)); //record velocity values for flywheel motors
+
+		int POS; //setting up holdposition PID for flywheel
+		base.opControl(); //run drive base function
+		movingParts.Rollers(); //run rolling parts function (flywheel, intakes, rollers)
+		if(master.get_digital(DIGITAL_L1)){ //flywheel funciton: if L1 pressed...
+      futureUse4.move(127); //move flywheel 100% forwards
+    }
+    else if(master.get_digital(DIGITAL_L2)){ //if L2 pressed...
+      futureUse4.move(-127); //move flywheel backwards 100%
+    }
+    else{futureUse4.move_absolute(0, POS);} //otherwise, hold flywheel position
+		pros::delay(10); //delay for rerun
+		time +=10; //timer for rerun
 	}
-	if (time > 14500) {
-		driveRB.move_velocity(0);
+	if (time > 14500) { //if more than 14.5 seconds has elapsed
+		driveRB.move_velocity(0); //DO NOT MOVE ANY MOTORS
 		driveLB.move_velocity(0);
 		driveRF.move_velocity(0);
 		driveLF.move_velocity(0);
@@ -62,5 +70,5 @@ void opcontrol() {
 		roller.move_velocity(0);
 		futureUse4.move_velocity(0);
 	}
-	fclose(file);
+	fclose(file); //close file
 }

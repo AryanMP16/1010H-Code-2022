@@ -63,7 +63,8 @@ void opClass::opControl() {
         else if(master.get_digital(DIGITAL_L2)){
           futureUse4.move(-127);
         }
-        else{futureUse4.move(0);}
+        else{futureUse4.move_absolute(0,futureUse4.get_position());
+        }
     ////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////ROLLER ZUKKER FUNC/////////////////////////////////
     //____________________________________________________________________________//

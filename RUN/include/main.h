@@ -44,6 +44,7 @@
 #include "api.h"
 #include "drive.h"
 #include "run.h"
+#include "display.h"
 
 static std::string RUNFILE= "/usd/1010H.txt";
 static std::string SAVEFOLDER= "Savefile";
@@ -86,6 +87,10 @@ static string RUNF = "RUNF.txt";
  extern Motor roller;
  extern Motor futureUse4;
 
+ extern lv_obj_t * op_tab;
+ extern lv_obj_t * sys_battery_meter;
+ extern lv_obj_t * bat_meter_label;
+ extern lv_obj_t * intakeLED;
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 extern "C" {

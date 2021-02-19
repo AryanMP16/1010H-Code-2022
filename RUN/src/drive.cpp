@@ -3,7 +3,8 @@
 
 int clawTargetR;
 int clawTargetL;
-
+ADIAnalogIn outer_limitL ('A');
+ADIAnalogIn outer_limitR ('B');
 //____________________________________________________________________________//
 /////////////////////////////EXPO DRIVE FUNC////////////////////////////////////
 //____________________________________________________________________________//
@@ -39,54 +40,44 @@ void opClass::opControl() {
 /////////////////////////////ROLLER INTAKE FUNC/////////////////////////////////
 //____________________________________________________________________________//
 Controller partner (CONTROLLER_PARTNER);
-void opClass::Rollers() {
-    if (partner.get_digital(DIGITAL_R1)){
-      rClaw.move_velocity(-100);
+void opClass::Rollers() { //using line sensors as limit switches
+    if (partner.get_digital(DIGITAL_R1) && outer_limitR.get_value() > 2500){ //if the intakes want to move out and the line sensor is NOT getting values
+      rClaw.move_velocity(-100); //move out at 50% speed
     }
-    else if (partner.get_digital(DIGITAL_R2)){
-      rClaw.move_velocity(200);
+    else if (partner.get_digital(DIGITAL_R2)){ //if intakes want to move in, let them move at 100% speed
+      rClaw.move_velocity(200); //move in at 100% speed
     }
-    else{rClaw.move_velocity(0);}
+    else{rClaw.move_velocity(0);} //otherwise, do not move intakes
 
-    if (partner.get_digital(DIGITAL_L1)){
-      lClaw.move_velocity(-100);
+    if (partner.get_digital(DIGITAL_L1) && outer_limitL.get_value() > 2500){ //if left intake wants to move out and line sensor is NOT getting values
+      lClaw.move_velocity(-100); //move out at 50% speed
     }
-    else if (partner.get_digital(DIGITAL_L2)){
-      lClaw.move_velocity(200);
+    else if (partner.get_digital(DIGITAL_L2)){ //if it wants to move in...
+      lClaw.move_velocity(200); //move in at 100% speed
     }
-    else{lClaw.move_velocity(0);}
-////////////////////////////////////////////////////////////////////////////////
-/////////////////////////FLYWHEEL (IN ROLLER FUNC)//////////////////////////////
-//____________________________________________________________________________//
-    if(master.get_digital(DIGITAL_L1)){
-      futureUse4.move(127);
-    }
-    else if(master.get_digital(DIGITAL_L2)){
-      futureUse4.move(-127);
-    }
-    else{futureUse4.move(0);}
+    else{lClaw.move_velocity(0);} //otherwise do not move
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////ROLLER ZUKKER FUNC/////////////////////////////////
 //____________________________________________________________________________//
-  if(master.get_digital(DIGITAL_R1)){
-    roller.move(127);
+  if(master.get_digital(DIGITAL_R1)){ //if button R1 on the master controller is pressed...
+    roller.move(127); //move ball up
   }
-  else if(master.get_digital(DIGITAL_R2)){
-    roller.move(-127);
+  else if(master.get_digital(DIGITAL_R2)){ //if button R2 on master controller is pressed...
+    roller.move(-127); //move ball down
   }
-  else{roller.move(0);}
-  }
+  else{roller.move(0);} //otherwise don't move
+}
   //____________________________________________________________________________//
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
   //____________________________________________________________________________//
 void AccTask_fn(void*par) {
-  while (true) {}
+  while (true) {} //not using task right now, but have used in past and will use in future
 };
 //____________________________________________________________________________//
 ////////////////////////////Don't crash into others/////////////////////////////
 //____________________________________________________________________________//
 bool goingToCrash;
-void dont() {
+void dont() { //meme function
   driveLB.move_absolute(driveLB.get_position(),0);
   driveRF.move_absolute(driveRF.get_position(),0);
   driveLF.move_absolute(driveLF.get_position(),0);
@@ -95,7 +86,7 @@ void dont() {
 //____________________________________________________________________________//
 /////////////////////////////////STOP FUNC//////////////////////////////////////
 //____________________________________________________________________________//
-void dpidClass::stop (void) {
+void dpidClass::stop (void) { //PID stop fucntion
       driveLB.move(0); //do not move motors
       driveRB.move(0);
       driveLF.move(0);
