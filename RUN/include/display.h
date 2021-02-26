@@ -8,9 +8,10 @@ public:
   void createScreen();
   void createTitle();
   void createImage();
-  void screenRefresh();
+  void refresh();
   void batteryBoi();
   void linemeter();
+  void lv_ex_led_1();
 };
 
 #endif

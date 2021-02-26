@@ -74,6 +74,7 @@ static string RUNF = "RUNF.txt";
  extern int clawTargetR;
  extern int clawTargetL;
  extern bool goingToCrash;
+ extern int batmeter;
 
 //Task
  extern Task acc_task;
@@ -87,10 +88,15 @@ static string RUNF = "RUNF.txt";
  extern Motor roller;
  extern Motor futureUse4;
 
+ extern ADILineSensor outer_limitL;
+  extern ADILineSensor outer_limitR;
+
  extern lv_obj_t * op_tab;
  extern lv_obj_t * sys_battery_meter;
  extern lv_obj_t * bat_meter_label;
  extern lv_obj_t * intakeLED;
+
+ extern Display screen;
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 extern "C" {

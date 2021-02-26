@@ -71,7 +71,8 @@ void opClass::Rollers() { //using line sensors as limit switches
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
   //____________________________________________________________________________//
 void AccTask_fn(void*par) {
-  while (true) {} //not using task right now, but have used in past and will use in future
+  while (true) {
+  } //not using task right now, but have used in past and will use in future
 };
 //____________________________________________________________________________//
 ////////////////////////////Don't crash into others/////////////////////////////

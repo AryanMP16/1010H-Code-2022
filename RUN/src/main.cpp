@@ -1,4 +1,5 @@
 #include "main.h"
+#include "display.h"
 
 void on_center_button() {
 	static bool pressed = false;
@@ -26,10 +27,9 @@ void on_center_button() {
 
 void initialize() {
 	screen.createScreen();
-	screen.screenRefresh();
+	screen.refresh();
 
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "DISCLAIMER: This robot has consumed an phat dose of methinphetamine and is therefore required to go ape shit on you");
 	pros::lcd::register_btn1_cb(on_center_button);
 	//motors
 	driveLB.set_brake_mode(E_MOTOR_BRAKE_BRAKE); //brake hold on drive base motors
@@ -50,7 +50,7 @@ void autonomous() {
 void opcontrol() {
 		int time;
 		time = 0;
-		master.print(0,0,"BECOME MONKE");
+		screen.refresh();
 	while (true) {
 		int POS; //using for holdposition PID for flywheel
 		if(master.get_digital(DIGITAL_L1)){ //if button L1 is pressed...
@@ -60,9 +60,11 @@ void opcontrol() {
       futureUse4.move(-127); //spin flywheel backwards 100%
     }
     else{futureUse4.move_absolute(0, POS);} //otherwise, hold the flywheel at its current position
-		base.opControl(); //using function for drive base
+		base.opControl(); //using functi	on for drive base
 		movingParts.Rollers(); //using function for rollers, flywheel, and intakes
-		screen.screenRefresh();
+
+		screen.refresh();
+
 		pros::delay(10);
 		time +=10; //counter for rerun
 	}
