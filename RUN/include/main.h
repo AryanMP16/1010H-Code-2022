@@ -95,8 +95,6 @@ static string RUNF = "RUNF.txt";
  extern lv_obj_t * sys_battery_meter;
  extern lv_obj_t * bat_meter_label;
  extern lv_obj_t * intakeLED;
-
- extern Display screen;
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 extern "C" {

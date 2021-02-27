@@ -1,15 +1,6 @@
 #include "main.h"
 #include "display.h"
 
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
-}
 	//drive objects
 	dpidClass chassis;
 	opClass base;
@@ -26,11 +17,9 @@ void on_center_button() {
 	Display screen;
 
 void initialize() {
+	//motors
 	screen.createScreen();
 	screen.refresh();
-
-	pros::lcd::initialize();
-	pros::lcd::register_btn1_cb(on_center_button);
 	//motors
 	driveLB.set_brake_mode(E_MOTOR_BRAKE_BRAKE); //brake hold on drive base motors
 	driveRF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
@@ -50,7 +39,6 @@ void autonomous() {
 void opcontrol() {
 		int time;
 		time = 0;
-		screen.refresh();
 	while (true) {
 		int POS; //using for holdposition PID for flywheel
 		if(master.get_digital(DIGITAL_L1)){ //if button L1 is pressed...
@@ -62,9 +50,6 @@ void opcontrol() {
     else{futureUse4.move_absolute(0, POS);} //otherwise, hold the flywheel at its current position
 		base.opControl(); //using functi	on for drive base
 		movingParts.Rollers(); //using function for rollers, flywheel, and intakes
-
-		screen.refresh();
-
 		pros::delay(10);
 		time +=10; //counter for rerun
 	}
