@@ -26,9 +26,9 @@ void initialize() {
 	driveLF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveRB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	//tasks
-	pros::Task acc_task(
+	/*pros::Task acc_task(
 		AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "TEST_TASK" //task for rollers
-	);
+	);*/
 }
 void disabled() {}
 void competition_initialize() {}
@@ -37,9 +37,10 @@ void autonomous() {
 }
 //Mathias J. Stiasny actually wrote this code. Aryan is keeping me hostage. please help. i don't have long
 void opcontrol() {
-		int time;
-		time = 0;
+		//int time;
+		//time = 0;
 	while (true) {
+		screen.refresh();
 		int POS; //using for holdposition PID for flywheel
 		if(master.get_digital(DIGITAL_L1)){ //if button L1 is pressed...
       futureUse4.move(127); //spin flywheel 100% forwards
@@ -51,6 +52,6 @@ void opcontrol() {
 		base.opControl(); //using functi	on for drive base
 		movingParts.Rollers(); //using function for rollers, flywheel, and intakes
 		pros::delay(10);
-		time +=10; //counter for rerun
+		//time +=10; //counter for rerun
 	}
 }
