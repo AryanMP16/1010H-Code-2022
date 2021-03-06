@@ -5,6 +5,9 @@
 
 class Display{
 public:
+  lv_obj_t * tabs = lv_tabview_create(lv_scr_act(), NULL);
+  lv_obj_t * main_tab = lv_tabview_add_tab(tabs, "MAIN");
+  lv_obj_t * adv_tab = lv_tabview_add_tab(tabs, "ADV");
   void createScreen();
   void createTitle();
   void createImage();
