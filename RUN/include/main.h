@@ -75,6 +75,9 @@ static string RUNF = "RUNF.txt";
  extern int clawTargetL;
  extern bool goingToCrash;
  extern int batmeter;
+ extern string readfile;
+ extern char readfilechar;
+ extern char hfile [];
 
 //Task
  extern Task acc_task;
@@ -89,8 +92,7 @@ static string RUNF = "RUNF.txt";
  extern Motor futureUse4;
 
  extern ADILineSensor outer_limitL;
-  extern ADILineSensor outer_limitR;
-
+    extern ADILineSensor outer_limitR;
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 extern "C" {

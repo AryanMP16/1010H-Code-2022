@@ -4,8 +4,7 @@
 void Run() { //the main run loop
   FILE *fp = fopen("/usd/1010H.txt", "r"); //open an fp file called "/usd/1010H.txt", and read from it
 
-  static float m1, m2, m3, m4, m6, m7; //these are placeholders for motor velocities
-  static int p5, p8;
+  static float m1, m2, m3, m4, m5, m6, m7, m8; //these are placeholders for motor velocities
 
   while (true) { //main while loop
 //closes file after all the motors have stopped (AFTER AUTO)
@@ -28,15 +27,18 @@ void Run() { //the main run loop
       }
 
     //reading from the array
-    fscanf(fp, "%f %f %f %f %i %i %f %f", &m1, &m2, &m3, &m4, &p5, &p8, &m6, &m7); //read a stream and format the file
-    driveLB.move_velocity(m2);
+    fscanf(fp, "%f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m8, &m6, &m7); //read a stream and format the file
+    //drive
+    driveLB.move_velocity(m2); //plays values from listed above recorded values
     driveRB.move_velocity(m1);
     driveLF.move_velocity(m4);
     driveRF.move_velocity(m3);
+    //roller intakes
     ////////////////////////////////
-    clawTargetL = p8;
-    clawTargetR = p5;
+    lClaw.move_velocity(m8);
+    rClaw.move_velocity(m5);
     ////////////////////////////////
+    //flywheel and roller
     roller.move_velocity(m6);
     futureUse4.move_velocity(m7);
     delay(10); //delay 10 milliseconds so as to balance the 10 millisecond delay in the record files

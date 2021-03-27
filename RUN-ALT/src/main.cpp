@@ -1,8 +1,5 @@
 #include "main.h"
 #include "display.h"
-#include <iostream>
-#include <string>
-#include <cstring>
 
 	//drive objects
 	dpidClass chassis;
@@ -18,7 +15,6 @@
 	Motor driveLF(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor driveLB(9, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Display screen;
-	int time=0;
 
 void initialize() {
 	//motors
@@ -37,12 +33,12 @@ void initialize() {
 void disabled() {}
 void competition_initialize() {}
 void autonomous() {
-	Run();
+	Run(); //rerun file
 }
 //Mathias J. Stiasny actually wrote this code. Aryan is keeping me hostage. please help. i don't have long
 void opcontrol() {
-		int time;
-		time = 0;
+		//int time;
+		//time = 0;
 	while (true) {
 		screen.refresh();
 		int POS; //using for holdposition PID for flywheel
@@ -55,5 +51,7 @@ void opcontrol() {
     else{futureUse4.move_absolute(0, POS);} //otherwise, hold the flywheel at its current position
 		base.opControl(); //using functi	on for drive base
 		movingParts.Rollers(); //using function for rollers, flywheel, and intakes
-	}
+		pros::delay(10);
+		//time +=10; //counter for rerun
+	} 
 }

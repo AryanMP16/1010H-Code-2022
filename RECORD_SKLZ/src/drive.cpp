@@ -3,7 +3,8 @@
 
 int clawTargetR;
 int clawTargetL;
-
+ADIAnalogIn outer_limitL ('A');
+ADIAnalogIn outer_limitR ('B');
 //____________________________________________________________________________//
 /////////////////////////////EXPO DRIVE FUNC////////////////////////////////////
 //____________________________________________________________________________//
@@ -34,47 +35,40 @@ void opClass::opControl() {
     double getVelocity(Motor motor) {
       return motor.get_actual_velocity(); //return velocity of motor
     };
-    ////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////ROLLER INTAKE FUNC/////////////////////////////////
-    //____________________________________________________________________________//
-    Controller partner (CONTROLLER_PARTNER);
-    void opClass::Rollers() {
-        if (partner.get_digital(DIGITAL_R1)){
-          rClaw.move_velocity(-100);
-        }
-        else if (partner.get_digital(DIGITAL_R2)){
-          rClaw.move_velocity(200);
-        }
-        else{rClaw.move_velocity(0);}
 
-        if (partner.get_digital(DIGITAL_L1)){
-          lClaw.move_velocity(-100);
-        }
-        else if (partner.get_digital(DIGITAL_L2)){
-          lClaw.move_velocity(200);
-        }
-        else{lClaw.move_velocity(0);}
-    ////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////FLYWHEEL (IN ROLLER FUNC)//////////////////////////////
-    //____________________________________________________________________________//
-        if(master.get_digital(DIGITAL_L1)){
-          futureUse4.move(127);
-        }
-        else if(master.get_digital(DIGITAL_L2)){
-          futureUse4.move(-127);
-        }
-        else{futureUse4.move(0);}
-    ////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////ROLLER ZUKKER FUNC/////////////////////////////////
-    //____________________________________________________________________________//
-      if(master.get_digital(DIGITAL_R1)){
-        roller.move(127);
-      }
-      else if(master.get_digital(DIGITAL_R2)){
-        roller.move(-127);
-      }
-      else{roller.move(0);}
-      }
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////ROLLER INTAKE FUNC/////////////////////////////////
+//____________________________________________________________________________//
+Controller partner (CONTROLLER_PARTNER);
+void opClass::Rollers() { //using line sensors as limit switches
+    int holdboiL = lClaw.get_position();
+    int holdboiR = rClaw.get_position();
+    if (partner.get_digital(DIGITAL_R1) && outer_limitR.get_value() > 2500){ //if the intakes want to move out and the line sensor is NOT getting values
+      rClaw.move_velocity(-100); //move out at 50% speed
+    }
+    else if (partner.get_digital(DIGITAL_R2)){ //if intakes want to move in, let them move at 100% speed
+      rClaw.move_velocity(200); //move in at 100% speed
+    }
+    else{rClaw.move_absolute(holdboiR, 0);} //otherwise, do not move intakes
+
+    if (partner.get_digital(DIGITAL_L1) && outer_limitL.get_value() > 2500){ //if left intake wants to move out and line sensor is NOT getting values
+      lClaw.move_velocity(-100); //move out at 50% speed
+    }
+    else if (partner.get_digital(DIGITAL_L2)){ //if it wants to move in...
+      lClaw.move_velocity(200); //move in at 100% speed
+    }
+    else{lClaw.move_absolute(holdboiL, 0);} //otherwise do not move
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////ROLLER ZUKKER FUNC/////////////////////////////////
+//____________________________________________________________________________//
+  if(master.get_digital(DIGITAL_R1)){
+    roller.move(127);
+  }
+  else if(master.get_digital(DIGITAL_R2)){
+    roller.move(-127);
+  }
+  else{roller.move(0);}
+}
   //____________________________________________________________________________//
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
   //____________________________________________________________________________//

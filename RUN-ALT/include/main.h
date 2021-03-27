@@ -44,6 +44,7 @@
 #include "api.h"
 #include "drive.h"
 #include "run.h"
+#include "display.h"
 
 static std::string RUNFILE= "/usd/1010H.txt";
 static std::string SAVEFOLDER= "Savefile";
@@ -73,6 +74,7 @@ static string RUNF = "RUNF.txt";
  extern int clawTargetR;
  extern int clawTargetL;
  extern bool goingToCrash;
+ extern int batmeter;
 
 //Task
  extern Task acc_task;
@@ -85,6 +87,9 @@ static string RUNF = "RUNF.txt";
  extern Motor rClaw;
  extern Motor roller;
  extern Motor futureUse4;
+
+ extern ADILineSensor outer_limitL;
+  extern ADILineSensor outer_limitR;
 
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus

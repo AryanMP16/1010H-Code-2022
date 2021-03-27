@@ -41,13 +41,15 @@ void opClass::opControl() {
 //____________________________________________________________________________//
 Controller partner (CONTROLLER_PARTNER);
 void opClass::Rollers() { //using line sensors as limit switches
+    int holdboiL = lClaw.get_position();
+    int holdboiR = rClaw.get_position();
     if (partner.get_digital(DIGITAL_R1) && outer_limitR.get_value() > 2500){ //if the intakes want to move out and the line sensor is NOT getting values
       rClaw.move_velocity(-100); //move out at 50% speed
     }
     else if (partner.get_digital(DIGITAL_R2)){ //if intakes want to move in, let them move at 100% speed
       rClaw.move_velocity(200); //move in at 100% speed
     }
-    else{rClaw.move_velocity(0);} //otherwise, do not move intakes
+    else{rClaw.move_absolute(holdboiR, 0);} //otherwise, do not move intakes
 
     if (partner.get_digital(DIGITAL_L1) && outer_limitL.get_value() > 2500){ //if left intake wants to move out and line sensor is NOT getting values
       lClaw.move_velocity(-100); //move out at 50% speed
@@ -55,7 +57,7 @@ void opClass::Rollers() { //using line sensors as limit switches
     else if (partner.get_digital(DIGITAL_L2)){ //if it wants to move in...
       lClaw.move_velocity(200); //move in at 100% speed
     }
-    else{lClaw.move_velocity(0);} //otherwise do not move
+    else{lClaw.move_absolute(holdboiL, 0);} //otherwise do not move
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////ROLLER ZUKKER FUNC/////////////////////////////////
 //____________________________________________________________________________//

@@ -1,7 +1,7 @@
 {
     "py/object": "pros.conductor.project.Project",
     "py/state": {
-        "project_name": "RECORD-SKLZ",
+        "project_name": "RECORD_SKLZ",
         "target": "v5",
         "templates": {
             "kernel": {
