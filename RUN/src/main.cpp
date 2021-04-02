@@ -19,6 +19,8 @@
 	Motor driveLB(9, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Display screen;
 	int time=0;
+	ADIUltrasonic ultrasonicRB ('E', 'F');
+	ADIUltrasonic ultrasonicRF ('C', 'D');
 
 void initialize() {
 	//motors
@@ -37,12 +39,13 @@ void initialize() {
 void disabled() {}
 void competition_initialize() {}
 void autonomous() {
-	Run();
 }
 //Mathias J. Stiasny actually wrote this code. Aryan is keeping me hostage. please help. i don't have long
 void opcontrol() {
-		int time;
-		time = 0;
+	int ultrf = (ultrasonicRB.get_value());
+	int ultrb = (ultrasonicRF.get_value())+20;
+	int time;
+	time = 0;
 	while (true) {
 		screen.refresh();
 		int POS; //using for holdposition PID for flywheel

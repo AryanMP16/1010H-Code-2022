@@ -30,6 +30,29 @@ void Run() { //the main run loop
         rClaw.move_velocity(0); //do not move the right intake motor as the end of the file has been reached
         //arm motor
         futureUse4.move_velocity(0); //do not move the arm motor as the end of the file has been reached
+
+        /*int ultrf = (ultrasonicRB.get_value());
+    		int ultrb = (ultrasonicRF.get_value())+10;
+    		string alignment;
+        string procession;
+        int flattime = 0;
+    			if((ultrb - 10)<ultrf && ultrf<(ultrb + 10)){
+            flattime+=10;
+    				alignment = "Alignment: STRIGHT";
+    			}
+    			else {
+    				alignment = "Alignment: NOT STRIGHT";
+            if((ultrf-ultrb)>0){
+              driveLB.move_velocity(75);
+              driveLF.move_velocity(75);
+            }
+            else{
+              driveRB.move_velocity(-75);
+              driveRF.move_velocity(-75);
+            }
+    			}
+    		std::cout << "Right Front: " << ultrb << "mm   Right Back: " <<  ultrf << "mm   " << alignment << "   " << "\n";*/
+
       }
 
       else if (feof(fp)) { //if the end of the recording file is reached, do not move the motors anymroe
