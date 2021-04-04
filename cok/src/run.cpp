@@ -16,8 +16,11 @@ void Run() { //the main run loop
 
       std::cout<<time<<"\n";
 
-      if (time<=9900 && time>=5000){
-        //roller.move_velocity(0);
+      if (time<=6900 && time>=5000){
+        roller.move_velocity(0);
+        futureUse4.move_velocity(0);
+        rClaw.move_velocity(0);
+        lClaw.move_velocity(0);
         int rightLIDAR = (backR.get());
         int leftLIDAR = (backL.get());
         int difLIDAR = (rightLIDAR-leftLIDAR);
