@@ -15,44 +15,21 @@ void Run() { //the main run loop
   static float m1, m2, m3, m4, m5, m6, m7, m8; //these are placeholders for motor velocities
 
     while (true) { //main while loop
-      time+=10; 
+      time+=10;
       delay(10);
 
       if (time<=9900 && time>=5000){
-        int rightLIDAR = (backR.get());
-        int leftLIDAR = (backL.get());
-        int difLIDAR = (rightLIDAR-leftLIDAR);
-        	if(difLIDAR>5){
-        		int error, sumError, diffError, errorLast, output;
-
-        		float kP = 0.7;
-        		float kI = 0;
-        		float kD = 1.2;
-
-        			error = difLIDAR; //error value equals arm target minus the arm's current position
-        			sumError += error; //sum error is defined as the error plus the sum of the error
-        			diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
-        			driveRB.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
-        			driveRF.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
-        			errorLast = error; //error last is defined as error
-        	}
-
-        	else if(difLIDAR<5){
-        		int error, sumError, diffError, errorLast, output;
-
-        		float kP = 0.7;
-        		float kI = 0;
-        		float kD = 1.2;
-
-        			error = difLIDAR; //error value equals arm target minus the arm's current position
-        			sumError += error; //sum error is defined as the error plus the sum of the error
-        			diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
-        			driveLB.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
-        			driveLF.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
-        			errorLast = error; //error last is defined as error
-        	}
-
-        	else{}
+        driveRB.move_velocity(0); //do not move the right back drive motor as the end of the file has been reached
+        driveRF.move_velocity(0); //do not move the right front drive motor as the end of the file has been reached
+        driveLB.move_velocity(0); //do not move the left back drive motor as the end of the file has been reached
+        driveLF.move_velocity(0); //do not move the left back drive motor as the end of the file has been reached
+        //roller motor
+        roller.move_velocity(0); //do not move the angler motor as the end of the file has been reached
+        //intakes
+        lClaw.move_velocity(0); //do not move the left intake motor as the end of the file has been reached
+        rClaw.move_velocity(0); //do not move the right intake motor as the end of the file has been reached
+        //arm motor
+        futureUse4.move_velocity(0); //do not move the arm motor as the end of the file has been reached
       }
 
       else if (feof(fp)) { //if the end of the recording file is reached, do not move the motors anymroe

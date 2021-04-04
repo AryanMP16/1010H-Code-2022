@@ -21,7 +21,7 @@
 	int time=0;
 	Distance backR (20);
 	Distance backL (11);
- 
+
 void initialize() {
 	//motors
 	screen.createScreen();
@@ -60,7 +60,40 @@ void opcontrol() {
 
 
 ////////////////////////////////////////////////////////////////////////////////////
+/*int rightLIDAR = (backR.get());
+int leftLIDAR = (backL.get());
+int difLIDAR = (rightLIDAR-leftLIDAR);
+	if(difLIDAR>5){
+		int error, sumError, diffError, errorLast, output;
 
+		float kP = 0.7;
+		float kI = 0;
+		float kD = 1.2;
+
+			error = difLIDAR; //error value equals arm target minus the arm's current position
+			sumError += error; //sum error is defined as the error plus the sum of the error
+			diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+			driveRB.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+			driveRF.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+			errorLast = error; //error last is defined as error
+	}
+
+	else if(difLIDAR<5){
+		int error, sumError, diffError, errorLast, output;
+
+		float kP = 0.7;
+		float kI = 0;
+		float kD = 1.2;
+
+			error = difLIDAR; //error value equals arm target minus the arm's current position
+			sumError += error; //sum error is defined as the error plus the sum of the error
+			diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+			driveLB.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+			driveLF.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+			errorLast = error; //error last is defined as error
+	}
+
+	else{}*/
 //////////////////////////////////////////////////////////////////////////////////////
 	}
 }
