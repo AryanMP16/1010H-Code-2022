@@ -16,7 +16,7 @@ void Run() { //the main run loop
 
       std::cout<<time<<"\n";
 
-      if (time<=6900 && time>=5000){
+      if (time<=7000 && time>=5000){
         roller.move_velocity(0);
         futureUse4.move_velocity(0);
         rClaw.move_velocity(0);
@@ -59,6 +59,46 @@ void Run() { //the main run loop
         	}
 
         	else{}
+      }
+
+      else if (time<=10000 && time>=7000){
+        int rightLIDAR = (backR.get());
+        int leftLIDAR = (backL.get());
+        int avgLIDAR = ((rightLIDAR+leftLIDAR)/2);
+        int wallDif = 500-avgLIDAR;
+
+        if ((wallDif)>0){
+          int error, sumError, diffError, errorLast, output;
+
+          float kP = 2;
+          float kI = 0;
+          float kD = 0.7;
+
+            error = wallDif; //error value equals arm target minus the arm's current position
+            sumError += error; //sum error is defined as the error plus the sum of the error
+            diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+            driveLB.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+            driveLF.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+            driveRB.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD)));
+            driveRF.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD)));
+            errorLast = error; //error last is defined as error
+        }
+        else {
+          int error, sumError, diffError, errorLast, output;
+
+          float kP = 2;
+          float kI = 0;
+          float kD = 0.7;
+
+            error = wallDif; //error value equals arm target minus the arm's current position
+            sumError += error; //sum error is defined as the error plus the sum of the error
+            diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+            driveLB.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+            driveLF.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD))); //arm will move according to kp, ki, and kd values
+            driveRB.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD)));
+            driveRF.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD)));
+            errorLast = error; //error last is defined as error
+        }
       }
 
       else if (feof(fp)) { //if the end of the recording file is reached, do not move the motors anymroe
