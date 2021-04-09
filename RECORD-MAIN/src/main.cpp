@@ -36,7 +36,7 @@ void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w"); //open a file named 1010H
 		int time = 0; //reset timer
 
-	while (time < 14500) { //if less than 14.5 seconds has elapsed...
+	while (time < 17500) { //if less than 14.5 seconds has elapsed...
 
 		fprintf(file, "%f\n", getVelocity(driveRB)); //record velocity values for drive base motors
 		fprintf(file, "%f\n", getVelocity(driveLB)); //record velocity values for drive base motors
@@ -60,7 +60,7 @@ void opcontrol() {
 		pros::delay(10); //delay for rerun
 		time +=10; //timer for rerun
 	}
-	if (time > 14500) { //if more than 14.5 seconds has elapsed
+	if (time > 17500) { //if more than 14.5 seconds has elapsed
 		driveRB.move_velocity(0); //DO NOT MOVE ANY MOTORS
 		driveLB.move_velocity(0);
 		driveRF.move_velocity(0);
