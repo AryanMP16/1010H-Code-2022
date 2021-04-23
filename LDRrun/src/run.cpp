@@ -14,7 +14,7 @@ void Run() { //the main run loop
       time+=10;
       delay(10);
 
-      if (time<=9500 && time>=8500){
+      if (time<=17500 && time>=16000){
         roller.move_velocity(0);
         futureUse4.move_velocity(0);
         rClaw.move_velocity(0);
@@ -58,7 +58,7 @@ void Run() { //the main run loop
 
         	else{}
       }
-
+/*
       else if (time<=11000 && time>=9500){
         int rightLIDAR = (backR.get());
         int leftLIDAR = (backL.get());
@@ -205,7 +205,7 @@ void Run() { //the main run loop
       ///////////////////////////////////////////////////////////////////////////////////////////////////////
     
       /////////////////////////////////////////////////??////////////////////////////////////////////////////
-
+*/
       else {
         //reading from the array
         fscanf(fp, "%f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m8, &m6, &m7); //read a stream and format the file
