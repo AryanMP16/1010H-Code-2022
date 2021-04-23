@@ -62,7 +62,7 @@ void Run() { //the main run loop
       else if (time<=11000 && time>=9500){
         int rightLIDAR = (backR.get());
         int leftLIDAR = (backL.get());
-        int wallDif = leftLIDAR-585;
+        int wallDif = leftLIDAR-455;
         cout << wallDif << "\n";
 
         if ((wallDif)>10){
@@ -116,9 +116,9 @@ void Run() { //the main run loop
           fclose(fp); //do not move the right back drive motor as the end of the file has been reached
           delay(100); //do not move the right back drive motor as the end of the file has been reached
       }
-      
+
       ///////////////////////////////////////////////////////////////////////////////////////////////////////
-      if (time<=29500 && time>=28500){
+      else if (time<=29500 && time>=28500){
         roller.move_velocity(0);
         futureUse4.move_velocity(0);
         rClaw.move_velocity(0);
@@ -166,7 +166,7 @@ void Run() { //the main run loop
       else if (time<=31000 && time>=29500){
         int rightLIDAR = (backR.get());
         int leftLIDAR = (backL.get());
-        int wallDif = leftLIDAR-585;
+        int wallDif = leftLIDAR-540;
         cout << wallDif << "\n";
 
         if ((wallDif)>10){
@@ -202,6 +202,8 @@ void Run() { //the main run loop
             errorLast = error; //error last is defined as error
         }
       }
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    
       /////////////////////////////////////////////////??////////////////////////////////////////////////////
 
       else {
