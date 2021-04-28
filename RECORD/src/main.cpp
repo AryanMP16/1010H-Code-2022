@@ -32,23 +32,39 @@ void competition_initialize() {}
 void autonomous() {
 }
 
+int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
+  int joystkSign;
+  int joyMax = 127 - joystkDead;
+  int joyLive = abs(joyVal) - joystkDead;
+  if (joyVal > 0) joystkSign = 1;
+  else if (joyVal < 0) joystkSign = -1;
+  else joystkSign = 0;
+  int power = joystkSign * (motorMin + (127 - motorMin) * pow(joyLive, driveExpon) / pow(joyMax, driveExpon));
+  return power;}
+
 void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w"); //open a file named 1010H
 		int time = 0; //reset timer
 
 	while (time < 15000) { //if less than 14.5 seconds has elapsed...
+		//testing upload to github
+		int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
+		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
+		      driveLB.move(-Y /*- X*/ - Z);
+		      driveRF.move(-Y /*- X*/ + Z);
+		      driveLF.move(-Y /*+ X*/ - Z);
+		      driveRB.move(-Y /*+ X*/ + Z);
 
-		fprintf(file, "%f\n", getVelocity(driveRB)); //record velocity values for drive base motors
-		fprintf(file, "%f\n", getVelocity(driveLB)); //record velocity values for drive base motors
-		fprintf(file, "%f\n", getVelocity(driveRF)); //record velocity values for drive base motors
-		fprintf(file, "%f\n", getVelocity(driveLF)); //record velocity values for drive base motors
+		fprintf(file, "%d\n", (-Y /*+ X*/ + Z)); //record velocity values for drive base motors
+		fprintf(file, "%d\n", (-Y /*- X*/ - Z)); //record velocity values for drive base motors
+		fprintf(file, "%d\n", (-Y /*- X*/ + Z)); //record velocity values for drive base motors
+		fprintf(file, "%d\n", (-Y /*+ X*/ - Z)); //record velocity values for drive base motors
 		fprintf(file, "%f\n", getVelocity(rClaw)); //record velocity values for intake motors
 		fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
 		fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
 		fprintf(file, "%f\n", getVelocity(futureUse4)); //record velocity values for flywheel motors
 
 		int POS; //setting up holdposition PID for flywheel
-		base.opControl(); //run drive base function
 		movingParts.Rollers(); //run rolling parts function (flywheel, intakes, rollers)
 		if(master.get_digital(DIGITAL_L1)){ //flywheel funciton: if L1 pressed...
       futureUse4.move(127); //move flywheel 100% forwards

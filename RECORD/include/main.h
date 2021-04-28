@@ -54,6 +54,10 @@ static string RUNF = "RUNF.txt";
 //globals
 extern int clawTargetR;
 extern int clawTargetL;
+extern int xLB;
+extern int xLF;
+extern int xRB;
+extern int xRF;
 
 //Controller
  extern Controller master;

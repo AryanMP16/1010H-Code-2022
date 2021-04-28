@@ -10,7 +10,7 @@ ADIAnalogIn outer_limitR ('B');
 //____________________________________________________________________________//
 Controller master (CONTROLLER_MASTER); //
 //expo drive
-int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
+/*int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
   int joystkSign;
   int joyMax = 127 - joystkDead;
   int joyLive = abs(joyVal) - joystkDead;
@@ -20,15 +20,19 @@ int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
   int power = joystkSign * (motorMin + (127 - motorMin) * pow(joyLive, driveExpon) / pow(joyMax, driveExpon));
   return power;}
 //testing upload to github
+int xLB;
+int xRF;
+int xLF;
+int xRB;
 void opClass::opControl() {
     int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
  		//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
- 		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
-      driveLB.move(-Y /*- X*/ - Z); //the back left motor moves according to 'left' values
- 	    driveRF.move(-Y /*- X*/ + Z); //the front right motor moves according to 'right' values
- 	    driveLF.move(-Y /*+ X*/ - Z); //the front left motor moves according to 'left' values
- 	    driveRB.move(-Y /*+ X*/ + Z); //the back right motor moves according to 'right' values
-    };
+ 		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);*/
+    //  int xLB = (-Y /*- X*/ - Z);
+    //  int xRF = (-Y /*- X*/ + Z);
+    //  int xLF = (-Y /*+ X*/ - Z);
+    //  int xRB = (-Y /*+ X*/ + Z);
+    //};
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
 //____________________________________________________________________________//

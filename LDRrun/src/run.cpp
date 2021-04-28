@@ -210,10 +210,10 @@ void Run() { //the main run loop
         //reading from the array
         fscanf(fp, "%f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m8, &m6, &m7); //read a stream and format the file
         //drive
-        driveLB.move_velocity(m2); //plays values from listed above recorded values
-        driveRB.move_velocity(m1);
-        driveLF.move_velocity(m4);
-        driveRF.move_velocity(m3);
+        driveLB.move(m2); //plays values from listed above recorded values
+        driveRB.move(m1);
+        driveLF.move(m4);
+        driveRF.move(m3);
         //roller intakes
         ////////////////////////////////
         lClaw.move_velocity(m8);
