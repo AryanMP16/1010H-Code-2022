@@ -24,10 +24,10 @@ void opClass::opControl() {
     int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
  		//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
  		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
-      driveLB.move(-Y /*- X*/ - Z); 
+      driveLB.move(-Y /*- X*/ - Z);
  	    driveRF.move(0.8*(-Y /*- X*/ + Z)); //lmao lets see how long until william notices
- 	    driveLF.move(-Y /*+ X*/ - Z); 
- 	    driveRB.move(-Y /*+ X*/ + Z); 
+ 	    driveLF.move(-Y /*+ X*/ - Z);
+ 	    driveRB.move(-Y /*+ X*/ + Z);
     };
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
@@ -40,41 +40,36 @@ void opClass::opControl() {
 /////////////////////////////ROLLER INTAKE FUNC/////////////////////////////////
 //____________________________________________________________________________//
 Controller partner (CONTROLLER_PARTNER);
-void opClass::Rollers() { //using line sensors as limit switches
-    int holdboiL = lClaw.get_position();
-    int holdboiR = rClaw.get_position();
-    if (partner.get_digital(DIGITAL_R1) && outer_limitR.get_value() > 2500){ //if the intakes want to move out and the line sensor is NOT getting values
-      rClaw.move_velocity(-100); //move out at 50% speed
-    }
-    else if (partner.get_digital(DIGITAL_R2)){ //if intakes want to move in, let them move at 100% speed
-      rClaw.move_velocity(200); //move in at 100% speed
-    }
-    else{rClaw.move_absolute(holdboiR, 0);} //otherwise, do not move intakes
-
-    if (partner.get_digital(DIGITAL_L1) && outer_limitL.get_value() > 2500){ //if left intake wants to move out and line sensor is NOT getting values
-      lClaw.move_velocity(-100); //move out at 50% speed
-    }
-    else if (partner.get_digital(DIGITAL_L2)){ //if it wants to move in...
-      lClaw.move_velocity(200); //move in at 100% speed
-    }
-    else{lClaw.move_absolute(holdboiL, 0);} //otherwise do not move
-////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////ROLLER ZUKKER FUNC/////////////////////////////////
-//____________________________________________________________________________//
-  if(master.get_digital(DIGITAL_R1)){ //if button R1 on the master controller is pressed...
-    roller.move(127); //move ball up
-  }
-  else if(master.get_digital(DIGITAL_R2)){ //if button R2 on master controller is pressed...
-    roller.move(-127); //move ball down
-  }
-  else{roller.move(0);} //otherwise don't move
-}
+void opClass::Rollers() {
+  int BUILT_DIFFERENT = roller.get_position();
+  if(master.get_digital(DIGITAL_R1)){clawTargetR = -575;}
+  else if(master.get_digital(DIGITAL_R2)){clawTargetR = -1040;}
+  else{roller.move_absolute(BUILT_DIFFERENT,0);}
+  };
   //____________________________________________________________________________//
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
   //____________________________________________________________________________//
 void AccTask_fn(void*par) {
+  rClaw.tare_position();
+  lClaw.tare_position();
+
+  clawTargetR = 0;
+  clawTargetL = 0;
+
   while (true) {
-  } //not using task right now, but have used in past and will use in future
+    int error, sumError, diffError, errorLast, output;
+    int BUILT_DIFFERENT;
+
+		float kP = 0.9;
+		float kI = 0;
+		float kD = 0;
+
+		error = clawTargetR - futureUse4.get_position(); //error value equals arm target minus the arm's current position
+		sumError += error; //sum error is defined as the error plus the sum of the error
+		diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+		futureUse4.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
+		errorLast = error; //error last is defined as error
+    }
 };
 //____________________________________________________________________________//
 ////////////////////////////Don't crash into others/////////////////////////////

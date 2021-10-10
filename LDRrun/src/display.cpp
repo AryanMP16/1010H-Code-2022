@@ -9,7 +9,7 @@ lv_obj_t * sys_battery_meter;
 lv_obj_t * battery_text;
 lv_obj_t * tabs = lv_tabview_create(lv_scr_act(), NULL);
 lv_obj_t * main_tab = lv_tabview_add_tab(tabs, "MAIN");
-lv_obj_t * adv_tab = lv_tabview_add_tab(tabs, "ADV");
+lv_obj_t * adv_tab = lv_tabview_add_tab(tabs, "ADV/DIAG");
 
 void Display::lv_ex_led_1(void) {
     led1 = lv_led_create(adv_tab, NULL);
@@ -17,7 +17,7 @@ void Display::lv_ex_led_1(void) {
     lv_obj_set_size(led1, 95, 25);
 
     led2 = lv_led_create(adv_tab, NULL);
-    lv_obj_align(led2, NULL, LV_ALIGN_CENTER, 130, -40);
+    lv_obj_align(led2, NULL, LV_ALIGN_CENTER, -150, -10);
     lv_obj_set_size(led2, 95, 25);
 }
 
@@ -37,8 +37,8 @@ void Display::linemeter(void){
 
 void Display::createTitle(void){
     lv_obj_t*label1 = lv_label_create(adv_tab, NULL);
-    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 130, -35);
-    lv_label_set_text(label1, "RIGHT Intake");
+    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, -200, -35);
+    lv_label_set_text(label1, "STOP FUCKING D̷͚̺̮̘͓͊̈́̀̑̇͒̇͑̆͛̎͘ͅṞ̴̛̖̬̱͈̟̞̲͓̯̠͙̒́̔͊́̈́̍̈́̆͋͂̈́̚͝Ị̴̙̜̌̈̐͛́͒͆͑͛̉̑̌̕V̸̺̮͓̝̤̖̼̖̆̊̄̇͘̚̕͝I̶̧̛̞͚͖̦̓̑́̄̈̚Ñ̷̮̪̥̦͎̠͖̿̿͑̚Ǵ̵͔̗͋͒̈̈̽̃͌͝͝͠");
 
     lv_obj_t*label2 = lv_label_create(adv_tab, NULL);
     lv_obj_align(label2, NULL, LV_ALIGN_CENTER, 130, 20);
@@ -54,7 +54,7 @@ void Display::createImage(void){
 
 void Display::refresh(void)
 {
-  if(outer_limitL.get_value() < 2500){lv_led_on(led1);}
+  if(driveRB.get_temperature() > 60){lv_led_on(led1);}
   else{lv_led_off(led1);}
   if(outer_limitR.get_value() < 2500){lv_led_on(led2);}
   else{lv_led_off(led2);}

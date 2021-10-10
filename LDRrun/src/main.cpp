@@ -4,6 +4,7 @@
 #include <string>
 #include <cstring>
 
+	int False = true;
 	//drive objects
 	dpidClass chassis;
 	opClass base;
@@ -32,9 +33,9 @@ void initialize() {
 	driveLF.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	driveRB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	//tasks
-	/*pros::Task acc_task(
+	pros::Task acc_task(
 		AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "TEST_TASK" //task for rollers
-	);*/
+	);
 }
 void disabled() {}
 void competition_initialize() {}
@@ -45,17 +46,12 @@ void autonomous() {
 void opcontrol() {
 		int time;
 		time = 0;
-	while (true) {
+	while (False) {
 		screen.refresh();
 		int POS; //using for holdposition PID for flywheel
-		if(master.get_digital(DIGITAL_L1)){ //if button L1 is pressed...
-      futureUse4.move(127); //spin flywheel 100% forwards
-    }
-    else if(master.get_digital(DIGITAL_L2)){ //if button L2 is pressed...
-      futureUse4.move(-127); //spin flywheel backwards 100%
-    }
-    else{futureUse4.move_absolute(0, POS);} //otherwise, hold the flywheel at its current position
+		 //otherwise, hold the flywheel at its current position
 		base.opControl(); //using functi	on for drive base
 		movingParts.Rollers(); //using function for rollers, flywheel, and intakes
+		cout << clawTargetR << "\n";
 	}
 }
