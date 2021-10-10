@@ -50,11 +50,9 @@ void opClass::Rollers() {
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
   //____________________________________________________________________________//
 void AccTask_fn(void*par) {
-  rClaw.tare_position();
-  lClaw.tare_position();
+  futureUse4.tare_position();
 
   clawTargetR = 0;
-  clawTargetL = 0;
 
   while (true) {
     int error, sumError, diffError, errorLast, output;
