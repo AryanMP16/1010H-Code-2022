@@ -64,6 +64,7 @@ static string RUNF = "RUNF.txt";
 
  //globals
  extern int clawTargetR;
+ extern int dir;
  extern int clawTargetL;
  extern bool goingToCrash;
  extern int batmeter;

@@ -3,6 +3,7 @@
 
 int clawTargetR;
 int clawTargetL;
+int dir;
 ADIAnalogIn outer_limitL ('A');
 ADIAnalogIn outer_limitR ('B');
 //____________________________________________________________________________//
@@ -42,9 +43,12 @@ void opClass::opControl() {
 Controller partner (CONTROLLER_PARTNER);
 void opClass::Rollers() {
   int BUILT_DIFFERENT = roller.get_position();
-  if(master.get_digital(DIGITAL_R1)){clawTargetR = -575;}
-  else if(master.get_digital(DIGITAL_R2)){clawTargetR = -1040;}
+  if(master.get_digital(DIGITAL_R1)){clawTargetR = 0;}
+  else if(master.get_digital(DIGITAL_R2)){clawTargetR = 1020;}
   else{roller.move_absolute(BUILT_DIFFERENT,0);}
+
+  if(master.get_digital(DIGITAL_L1)){roller.move_velocity(200);}
+  else if(master.get_digital(DIGITAL_L2)){roller.move_velocity(-200);}
   };
   //____________________________________________________________________________//
   /////////////////////////////////TASK FUNCTION//////////////////////////////////
@@ -60,7 +64,7 @@ void AccTask_fn(void*par) {
 
 		float kP = 0.9;
 		float kI = 0;
-		float kD = 0;
+		float kD = 1.5;
 
 		error = clawTargetR - futureUse4.get_position(); //error value equals arm target minus the arm's current position
 		sumError += error; //sum error is defined as the error plus the sum of the error
