@@ -10,29 +10,6 @@ ADIAnalogIn outer_limitR ('B');
 //____________________________________________________________________________//
 Controller master (CONTROLLER_MASTER); //
 //expo drive
-/*int exponentialD(int joyVal, float driveExpon, int joystkDead, int motorMin){
-  int joystkSign;
-  int joyMax = 127 - joystkDead;
-  int joyLive = abs(joyVal) - joystkDead;
-  if (joyVal > 0) joystkSign = 1;
-  else if (joyVal < 0) joystkSign = -1;
-  else joystkSign = 0;
-  int power = joystkSign * (motorMin + (127 - motorMin) * pow(joyLive, driveExpon) / pow(joyMax, driveExpon));
-  return power;}
-//testing upload to github
-int xLB;
-int xRF;
-int xLF;
-int xRB;
-void opClass::opControl() {
-    int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
- 		//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
- 		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);*/
-    //  int xLB = (-Y /*- X*/ - Z);
-    //  int xRF = (-Y /*- X*/ + Z);
-    //  int xLF = (-Y /*+ X*/ - Z);
-    //  int xRB = (-Y /*+ X*/ + Z);
-    //};
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
 //____________________________________________________________________________//
@@ -40,48 +17,47 @@ void opClass::opControl() {
       return motor.get_actual_velocity(); //return velocity of motor
     };
 
+void AccTask_fn(void*par) {
+  futureUse4.tare_position();
+
+  clawTargetR = 0;
+
+  while (true) {
+    int error, sumError, diffError, errorLast, output;
+    int BUILT_DIFFERENT;
+
+		float kP = 0.9;
+		float kI = 0;
+		float kD = 1.5;
+
+		error = clawTargetR - futureUse4.get_position(); //error value equals arm target minus the arm's current position
+		sumError += error; //sum error is defined as the error plus the sum of the error
+		diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
+		futureUse4.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
+		errorLast = error; //error last is defined as error
+
+    }
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////ROLLER INTAKE FUNC/////////////////////////////////
 //____________________________________________________________________________//
 Controller partner (CONTROLLER_PARTNER);
 void opClass::Rollers() {
-    if (partner.get_digital(DIGITAL_R1) && outer_limitR.get_value() > 2500){
-      rClaw.move_velocity(-100);
-    }
-    else if (partner.get_digital(DIGITAL_R2)){
-      rClaw.move_velocity(200);
-    }
-    else{rClaw.move_velocity(0);}
+  int BUILT_DIFFERENT = roller.get_position();
+  if(master.get_digital(DIGITAL_R1)){clawTargetR = 350;}
+  else if(master.get_digital(DIGITAL_R2)){clawTargetR = 980;}
+  else{roller.move_absolute(BUILT_DIFFERENT,0);}
 
-    if (partner.get_digital(DIGITAL_L1) && outer_limitL.get_value() > 2500){
-      lClaw.move_velocity(-100);
-    }
-    else if (partner.get_digital(DIGITAL_L2)){
-      lClaw.move_velocity(200);
-    }
-    else{lClaw.move_velocity(0);}
-////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////ROLLER ZUKKER FUNC/////////////////////////////////
-//____________________________________________________________________________//
-  if(master.get_digital(DIGITAL_R1)){
-    roller.move(127);
-  }
-  else if(master.get_digital(DIGITAL_R2)){
-    roller.move(-127);
-  }
-  else{roller.move(0);}
-}
-  //____________________________________________________________________________//
-  /////////////////////////////////TASK FUNCTION//////////////////////////////////
-  //____________________________________________________________________________//
-void AccTask_fn(void*par) {
-  while (true) {}
-};
+  if(master.get_digital(DIGITAL_L1)){roller.move_velocity(600);}
+  else if(master.get_digital(DIGITAL_L2)){roller.move_velocity(-600);}
+  };
+  
 //____________________________________________________________________________//
 ////////////////////////////Don't crash into others/////////////////////////////
 //____________________________________________________________________________//
 bool goingToCrash;
-void dont() {
+void dont() { //meme function
   driveLB.move_absolute(driveLB.get_position(),0);
   driveRF.move_absolute(driveRF.get_position(),0);
   driveLF.move_absolute(driveLF.get_position(),0);
@@ -90,7 +66,7 @@ void dont() {
 //____________________________________________________________________________//
 /////////////////////////////////STOP FUNC//////////////////////////////////////
 //____________________________________________________________________________//
-void dpidClass::stop (void) {
+void dpidClass::stop (void) { //PID stop fucntion
       driveLB.move(0); //do not move motors
       driveRB.move(0);
       driveLF.move(0);

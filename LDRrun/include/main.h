@@ -64,7 +64,7 @@ static string RUNF = "RUNF.txt";
 
  //globals
  extern int clawTargetR;
- extern int dir;
+ extern int DIR;
  extern int clawTargetL;
  extern bool goingToCrash;
  extern int batmeter;
@@ -83,6 +83,8 @@ static string RUNF = "RUNF.txt";
  extern Motor rClaw;
  extern Motor roller;
  extern Motor futureUse4;
+
+ extern Display screen;
 
  extern ADILineSensor outer_limitL;
     extern ADILineSensor outer_limitR;

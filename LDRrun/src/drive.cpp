@@ -3,7 +3,7 @@
 
 int clawTargetR;
 int clawTargetL;
-int dir;
+int DIR = 1;
 ADIAnalogIn outer_limitL ('A');
 ADIAnalogIn outer_limitR ('B');
 //____________________________________________________________________________//
@@ -25,10 +25,18 @@ void opClass::opControl() {
     int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
  		//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
  		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
-      driveLB.move(-Y /*- X*/ - Z);
- 	    driveRF.move(0.8*(-Y /*- X*/ + Z)); //lmao lets see how long until william notices
- 	    driveLF.move(-Y /*+ X*/ - Z);
- 	    driveRB.move(-Y /*+ X*/ + Z);
+      driveLB.move((DIR * (-Y)) /*- X*/ - Z);
+ 	    driveRF.move((DIR * (-Y)) /*- X*/ + Z);
+ 	    driveLF.move((DIR * (-Y)) /*+ X*/ - Z);
+ 	    driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
+
+      if(master.get_digital(DIGITAL_X)){
+        DIR = -1;
+        }
+      if (master.get_digital(DIGITAL_B)){
+          DIR = 1;
+        }
+      cout <<DIR<<"\n";
     };
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
@@ -43,15 +51,15 @@ void opClass::opControl() {
 Controller partner (CONTROLLER_PARTNER);
 void opClass::Rollers() {
   int BUILT_DIFFERENT = roller.get_position();
-  if(master.get_digital(DIGITAL_R1)){clawTargetR = 0;}
-  else if(master.get_digital(DIGITAL_R2)){clawTargetR = 1020;}
+  if(master.get_digital(DIGITAL_R1)){clawTargetR = 350;}
+  else if(master.get_digital(DIGITAL_R2)){clawTargetR = 980;}
   else{roller.move_absolute(BUILT_DIFFERENT,0);}
 
-  if(master.get_digital(DIGITAL_L1)){roller.move_velocity(200);}
-  else if(master.get_digital(DIGITAL_L2)){roller.move_velocity(-200);}
+  if(master.get_digital(DIGITAL_L1)){roller.move_velocity(600);}
+  else if(master.get_digital(DIGITAL_L2)){roller.move_velocity(-600);}
   };
   //____________________________________________________________________________//
-  /////////////////////////////////TASK FUNCTION//////////////////////////////////
+  ///////////////////////////TASK FUNCTION NUMBER ONE/////////////////////////////
   //____________________________________________________________________________//
 void AccTask_fn(void*par) {
   futureUse4.tare_position();
@@ -71,6 +79,7 @@ void AccTask_fn(void*par) {
 		diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
 		futureUse4.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
 		errorLast = error; //error last is defined as error
+
     }
 };
 //____________________________________________________________________________//

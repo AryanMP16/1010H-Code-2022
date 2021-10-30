@@ -18,4 +18,7 @@ public:
   void lv_ex_led_2();
 };
 
+ extern Task disp_task;
+ extern void DispTask_fn(void*par); //task for motor acceleration
+
 #endif

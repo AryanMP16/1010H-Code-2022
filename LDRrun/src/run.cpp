@@ -64,14 +64,11 @@ void Run() { //the main run loop
         int leftLIDAR = (backL.get());
         int wallDif = leftLIDAR-455;
         cout << wallDif << "\n";
-
         if ((wallDif)>10){
           int error, sumError, diffError, errorLast, output;
-
           float kP = 1.0;
           float kI = 0;
           float kD = 1.8;
-
             error = wallDif; //error value equals arm target minus the arm's current position
             sumError += error; //sum error is defined as the error plus the sum of the error
             diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
@@ -83,11 +80,9 @@ void Run() { //the main run loop
         }
         else if (wallDif < 10){
           int error, sumError, diffError, errorLast, output;
-
           float kP = 1.0;
           float kI = 0;
           float kD = 1.8;
-
             error = wallDif; //error value equals arm target minus the arm's current position
             sumError += error; //sum error is defined as the error plus the sum of the error
             diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
@@ -98,7 +93,6 @@ void Run() { //the main run loop
             errorLast = error; //error last is defined as error
         }
       }
-
       else if (feof(fp)) { //if the end of the recording file is reached, do not move the motors anymroe
         /////////stop all of the motors
           driveRB.move_velocity(0); //do not move the right back drive motor as the end of the file has been reached
@@ -116,7 +110,6 @@ void Run() { //the main run loop
           fclose(fp); //do not move the right back drive motor as the end of the file has been reached
           delay(100); //do not move the right back drive motor as the end of the file has been reached
       }
-
       ///////////////////////////////////////////////////////////////////////////////////////////////////////
       else if (time<=29500 && time>=28500){
         roller.move_velocity(0);
@@ -128,11 +121,9 @@ void Run() { //the main run loop
         int difLIDAR = (rightLIDAR-leftLIDAR);
         	if(difLIDAR>1){
         		int error, sumError, diffError, errorLast, output;
-
         		float kP = 2;
         		float kI = 0;
         		float kD = 0.7;
-
         			error = difLIDAR; //error value equals arm target minus the arm's current position
         			sumError += error; //sum error is defined as the error plus the sum of the error
         			diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
@@ -142,14 +133,11 @@ void Run() { //the main run loop
         			driveLF.move(0.5*(-(error * kP) + (sumError * kI) + (diffError * kD)));
               errorLast = error; //error last is defined as error
         	}
-
         	else if(difLIDAR<1){
         		int error, sumError, diffError, errorLast, output;
-
             float kP = 2;
         		float kI = 0;
         		float kD = 0.7;
-
         			error = difLIDAR; //error value equals arm target minus the arm's current position
         			sumError += error; //sum error is defined as the error plus the sum of the error
         			diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
@@ -159,23 +147,18 @@ void Run() { //the main run loop
               driveRF.move(-0.5*(-(error * kP) + (sumError * kI) + (diffError * kD)));
               errorLast = error; //error last is defined as error
         	}
-
         	else{}
       }
-
       else if (time<=31000 && time>=29500){
         int rightLIDAR = (backR.get());
         int leftLIDAR = (backL.get());
         int wallDif = leftLIDAR-540;
         cout << wallDif << "\n";
-
         if ((wallDif)>10){
           int error, sumError, diffError, errorLast, output;
-
           float kP = 1.0;
           float kI = 0;
           float kD = 1.8;
-
             error = wallDif; //error value equals arm target minus the arm's current position
             sumError += error; //sum error is defined as the error plus the sum of the error
             diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
@@ -187,11 +170,9 @@ void Run() { //the main run loop
         }
         else if (wallDif < 10){
           int error, sumError, diffError, errorLast, output;
-
           float kP = 1.0;
           float kI = 0;
           float kD = 1.8;
-
             error = wallDif; //error value equals arm target minus the arm's current position
             sumError += error; //sum error is defined as the error plus the sum of the error
             diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
@@ -208,7 +189,7 @@ void Run() { //the main run loop
 */
       else {
         //reading from the array
-        fscanf(fp, "%f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m8, &m6, &m7); //read a stream and format the file
+        fscanf(fp, "%f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m6, &m7, &m8); //read a stream and format the file
         //drive
         driveLB.move(m2); //plays values from listed above recorded values
         driveRB.move(m1);
@@ -216,12 +197,12 @@ void Run() { //the main run loop
         driveRF.move(m3);
         //roller intakes
         ////////////////////////////////
-        lClaw.move_velocity(m8);
+        lClaw.move_velocity(m6);
         rClaw.move_velocity(m5);
         ////////////////////////////////
         //flywheel and roller
-        roller.move_velocity(m6);
-        futureUse4.move_velocity(m7);
+        roller.move_velocity(m7);
+        clawTargetR = (m8); //FORMERLY: futureUse4.move_velocity(m8);
       }
   }
 }

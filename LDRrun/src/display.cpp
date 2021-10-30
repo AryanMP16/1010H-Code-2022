@@ -54,10 +54,9 @@ void Display::createImage(void){
 
 void Display::refresh(void)
 {
-  if(driveRB.get_temperature() > 60){lv_led_on(led1);}
+  if(master.get_digital(DIGITAL_A)){lv_led_on(led1);}
   else{lv_led_off(led1);}
-  if(outer_limitR.get_value() < 2500){lv_led_on(led2);}
-  else{lv_led_off(led2);}
+
   int boi = pros::battery::get_capacity();
   lv_lmeter_set_value(sys_battery_meter, boi);
   lv_label_set_text(battery_text, (std::to_string(boi)+"%").c_str());  //Caden Hewlet's fix
@@ -73,4 +72,11 @@ void Display::createScreen(void)
   linemeter();
   createTitle();
   createImage();
+}
+
+void DispTask_fn(void*par){
+  screen.createScreen();
+  while(true){
+    screen.refresh();
+  }
 }
