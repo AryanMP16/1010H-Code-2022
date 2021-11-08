@@ -6,7 +6,6 @@
 
 	Display screen;
 
-	int False = true;
 	//drive objects
 	dpidClass chassis;
 	opClass base;
@@ -15,14 +14,14 @@
 	Motor futureUse4(17, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES); //CAP LIFT
 	Motor driveRB(15, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 	Motor lClaw(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-	Motor roller(20, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES); //NOW INTAKE
+	Motor roller(20, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor rClaw(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor driveRF(16, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 	Motor driveLF(18, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor driveLB(19, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	int time=0;
-	Distance backR (20);
-	Distance backL (11);
+	Distance backR (14);
+	Distance backL (9);
 
 void initialize() {
 	//motors
@@ -49,15 +48,25 @@ void autonomous() {
 	futureUse4.tare_position();
 	Run();
 }
-//Mathias J. Stiasny actually wrote this code. Aryan is keeping me hostage. please help. i don't have long
+
 void opcontrol() {
-		int time;
-		time = 0;
-	while (False) {
-		int POS; //using for holdposition PID for flywheel
-		 //otherwise, hold the flywheel at its current position
-		base.opControl(); //using functi	on for drive base
-		movingParts.Rollers(); //using function for rollers, flywheel, and intakes
-		cout << clawTargetR << "\n";
+	//timer
+	int time;
+	time = 0;
+
+	ADIUltrasonic sensor ('A'/*ping*/, 'B'/*echo*/); //ultrasonic sensor initialization
+
+	while (true) { //main loop
+		/*if (master.get_digital(DIGITAL_A) && backR.get() >= 20){ //if button A is pressed...
+			roller.move_velocity(200); //move robot roller 100%
+		}
+		else{
+			roller.move(0); //DO NOT move robot roller
+		}*/
+
+		cout << "Distance ultrasonic: " << sensor.get_value() << " || Line sensor value:" << (outer_limitR.get_value()-33) << "\n";  // display ultrasonic value
+
+		base.opControl(); //using function for drive base
+		movingParts.Rollers(); //using function for rollers, conveyor, and intakes
 	}
 }

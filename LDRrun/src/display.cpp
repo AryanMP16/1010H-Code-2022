@@ -38,7 +38,7 @@ void Display::linemeter(void){
 void Display::createTitle(void){
     lv_obj_t*label1 = lv_label_create(adv_tab, NULL);
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, -200, -35);
-    lv_label_set_text(label1, "STOP FUCKING D̷͚̺̮̘͓͊̈́̀̑̇͒̇͑̆͛̎͘ͅṞ̴̛̖̬̱͈̟̞̲͓̯̠͙̒́̔͊́̈́̍̈́̆͋͂̈́̚͝Ị̴̙̜̌̈̐͛́͒͆͑͛̉̑̌̕V̸̺̮͓̝̤̖̼̖̆̊̄̇͘̚̕͝I̶̧̛̞͚͖̦̓̑́̄̈̚Ñ̷̮̪̥̦͎̠͖̿̿͑̚Ǵ̵͔̗͋͒̈̈̽̃͌͝͝͠");
+    lv_label_set_text(label1, "STOP DRIVING");
 
     lv_obj_t*label2 = lv_label_create(adv_tab, NULL);
     lv_obj_align(label2, NULL, LV_ALIGN_CENTER, 130, 20);

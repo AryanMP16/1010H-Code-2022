@@ -3,9 +3,9 @@
 
 int clawTargetR;
 int clawTargetL;
-int DIR = 1;
-ADIAnalogIn outer_limitL ('A');
-ADIAnalogIn outer_limitR ('B');
+int DIR = -1;
+ADIAnalogIn outer_limitL ('E');
+ADIAnalogIn outer_limitR ('H');
 //____________________________________________________________________________//
 /////////////////////////////EXPO DRIVE FUNC////////////////////////////////////
 //____________________________________________________________________________//
@@ -31,12 +31,11 @@ void opClass::opControl() {
  	    driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
 
       if(master.get_digital(DIGITAL_X)){
-        DIR = -1;
+        DIR = 1;
         }
       if (master.get_digital(DIGITAL_B)){
-          DIR = 1;
+          DIR = -1;
         }
-      cout <<DIR<<"\n";
     };
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
@@ -50,13 +49,16 @@ void opClass::opControl() {
 //____________________________________________________________________________//
 Controller partner (CONTROLLER_PARTNER);
 void opClass::Rollers() {
-  int BUILT_DIFFERENT = roller.get_position();
-  if(master.get_digital(DIGITAL_R1)){clawTargetR = 350;}
-  else if(master.get_digital(DIGITAL_R2)){clawTargetR = 980;}
-  else{roller.move_absolute(BUILT_DIFFERENT,0);}
+  int BUILT_DIFFERENT = futureUse4.get_position();
+  if(master.get_digital(DIGITAL_L1)){clawTargetR = 350;}
+  else if(master.get_digital(DIGITAL_L2)){clawTargetR = 980;}
+  else{futureUse4.move_absolute(BUILT_DIFFERENT,0);}
 
-  if(master.get_digital(DIGITAL_L1)){roller.move_velocity(600);}
-  else if(master.get_digital(DIGITAL_L2)){roller.move_velocity(-600);}
+  if(master.get_digital(DIGITAL_R1)){roller.move_velocity(-130);} //REMOVE COMMENTS ON THIS//////////////////////////
+  else if(master.get_digital(DIGITAL_R2)){roller.move_velocity(130);}
+  else if (master.get_digital(DIGITAL_UP)){roller.move_velocity(-200);}
+  else if (master.get_digital(DIGITAL_DOWN)){roller.move_velocity(200);}
+  else{roller.move_velocity(0);}
   };
   //____________________________________________________________________________//
   ///////////////////////////TASK FUNCTION NUMBER ONE/////////////////////////////

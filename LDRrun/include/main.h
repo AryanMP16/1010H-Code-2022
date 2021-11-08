@@ -87,9 +87,9 @@ static string RUNF = "RUNF.txt";
  extern Display screen;
 
  extern ADILineSensor outer_limitL;
-    extern ADILineSensor outer_limitR;
-    extern Distance backR;
-    extern Distance backL;
+ extern ADILineSensor outer_limitR;
+ extern Distance backR;
+ extern Distance backL;
  ///////////////////////////////////////////////////////////////////////////
 #ifdef __cplusplus
 extern "C" {
