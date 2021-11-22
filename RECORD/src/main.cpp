@@ -15,7 +15,7 @@ Motor futureUse4(17, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES); //CAP L
 	Motor driveLF(18, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 	Motor driveLB(19, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 
-void initialize() {
+void initialize() { 
 	pros::lcd::initialize();
 //motors
 	driveLB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
