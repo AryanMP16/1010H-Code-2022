@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-
+	bool False = true;
 	Display screen;
 
 	//drive objects
@@ -34,11 +34,7 @@ void initialize() {
 	driveRB.set_brake_mode(E_MOTOR_BRAKE_BRAKE);
 	//tasks
 	pros::Task acc_task(
-		AccTask_fn, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "TEST_TASK" //task for rollers
-	);
-
-	pros::Task disp_task(
-		DispTask_fn, (void*)"PROS", TASK_PRIORITY_MIN, TASK_STACK_DEPTH_DEFAULT, "X_TASK"
+		AccTask_fn, (void*)"PROS", TASK_PRIORITY_MIN, TASK_STACK_DEPTH_MIN, "TEST_TASK" //task for rollers
 	);
 }
 
@@ -54,19 +50,20 @@ void opcontrol() {
 	int time;
 	time = 0;
 
-	ADIUltrasonic sensor ('A'/*ping*/, 'B'/*echo*/); //ultrasonic sensor initialization
 
-	while (true) { //main loop
-		/*if (master.get_digital(DIGITAL_A) && backR.get() >= 20){ //if button A is pressed...
-			roller.move_velocity(200); //move robot roller 100%
+	while (False) { //main loop
+		screen.refresh();
+		/*if(master.get_digital(DIGITAL_RIGHT)){
+			chassis.swervePID(1, 1, 1, 1, 1000, 0.012, 0.012);
 		}
 		else{
-			roller.move(0); //DO NOT move robot roller
+			driveRF.move_velocity(0);
+		  driveRB.move_velocity(0);
+		  driveLF.move_velocity(0);
+		  driveLB.move_velocity(0);
 		}*/
-
-		cout << "Distance ultrasonic: " << sensor.get_value() << " || Line sensor value:" << (outer_limitR.get_value()-33) << "\n";  // display ultrasonic value
-
 		base.opControl(); //using function for drive base
 		movingParts.Rollers(); //using function for rollers, conveyor, and intakes
+		delay(20);
 	}
 }

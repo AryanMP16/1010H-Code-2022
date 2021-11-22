@@ -85,6 +85,48 @@ void AccTask_fn(void*par) {
     }
 };
 //____________________________________________________________________________//
+/////////////////////////////////SWERVE PID///////////////////////////////////////
+//____________________________________________________________________________//
+void dpidClass::swervePID(int L_or_R, int angle, int radius, int length, int timeout, float gain, float loss){
+  float vR=200;
+  float vL;
+  float vL_Last;
+  float vR_Last;
+  int startTime = millis();
+  float time=0;
+////////////////////////////////////////////
+while((millis() - startTime) < (timeout)){
+  time+= 0.06192190192;
+  if (time < (timeout)){
+    if(vL < 200){
+      vL+=gain;
+    }
+    else{
+      vL = 200;
+    }
+
+    if(vR > 65){
+      vR-=loss;
+    }
+    else{
+      vR = 65;
+    }
+  }
+  cout << "VEL: " <<driveLF.get_actual_velocity()<<"  TIME: "<<time<<"\n";
+//////////////////////////////
+  driveRF.move_velocity(vR);//
+  driveRB.move_velocity(vR);//
+//~~~~~~~~~~~~~~~~~~~~~~~~~///
+  driveLF.move_velocity(vL);//
+  driveLB.move_velocity(vL);//
+//////////////////////////////
+  }
+  time = 99999999999;
+}
+
+
+
+//____________________________________________________________________________//
 ////////////////////////////Don't crash into others/////////////////////////////
 //____________________________________________________________________________//
 bool goingToCrash;

@@ -8,6 +8,7 @@ public:
   void movePID(int direction, int target, int timeout, int cap); //function for autonomous PID drive
   void strafePID(int direction, int target, int timeout, int cap); //PID strafe
   void turnPID(int direction, int target, int timeout); //PID turn
+  void swervePID(int L_or_R, int angle, int radius, int length, int timeout, float gain, float loss); // swerve PID
 };
 
 class opClass{ //operator control class

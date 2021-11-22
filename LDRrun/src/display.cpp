@@ -3,6 +3,7 @@
 #include <string.h>
 #include "display/lvgl.h"
 
+string Rdist;
 lv_obj_t*led1;
 lv_obj_t*led2;
 lv_obj_t * sys_battery_meter;
@@ -13,12 +14,12 @@ lv_obj_t * adv_tab = lv_tabview_add_tab(tabs, "ADV/DIAG");
 
 void Display::lv_ex_led_1(void) {
     led1 = lv_led_create(adv_tab, NULL);
-    lv_obj_align(led1, NULL, LV_ALIGN_CENTER, 130, 80);
-    lv_obj_set_size(led1, 95, 25);
+    lv_obj_align(led1, NULL, LV_ALIGN_CENTER, -205, 200);
+    lv_obj_set_size(led1, 95, 35);
 
     led2 = lv_led_create(adv_tab, NULL);
-    lv_obj_align(led2, NULL, LV_ALIGN_CENTER, -150, -10);
-    lv_obj_set_size(led2, 95, 25);
+    lv_obj_align(led2, NULL, LV_ALIGN_CENTER, -205, -45);
+    lv_obj_set_size(led2, 95, 35);
 }
 
 void Display::linemeter(void){
@@ -37,12 +38,12 @@ void Display::linemeter(void){
 
 void Display::createTitle(void){
     lv_obj_t*label1 = lv_label_create(adv_tab, NULL);
-    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, -200, -35);
-    lv_label_set_text(label1, "STOP DRIVING");
+    lv_obj_align(label1, NULL, LV_ALIGN_CENTER, -185, 33);
+    lv_label_set_text(label1, "R-Dist");
 
     lv_obj_t*label2 = lv_label_create(adv_tab, NULL);
-    lv_obj_align(label2, NULL, LV_ALIGN_CENTER, 130, 20);
-    lv_label_set_text(label2, "LEFT Intake");
+    lv_obj_align(label2, NULL, LV_ALIGN_CENTER, -185, -20);
+    lv_label_set_text(label2, "L-Dist");
 }
 
 void Display::createImage(void){
@@ -54,8 +55,11 @@ void Display::createImage(void){
 
 void Display::refresh(void)
 {
-  if(master.get_digital(DIGITAL_A)){lv_led_on(led1);}
+  if(backR.get() > 200){lv_led_on(led1);}
   else{lv_led_off(led1);}
+
+  if(backL.get() > 200) {lv_led_on(led2);}
+  else{lv_led_off(led2);}
 
   int boi = pros::battery::get_capacity();
   lv_lmeter_set_value(sys_battery_meter, boi);
@@ -72,11 +76,4 @@ void Display::createScreen(void)
   linemeter();
   createTitle();
   createImage();
-}
-
-void DispTask_fn(void*par){
-  screen.createScreen();
-  while(true){
-    screen.refresh();
-  }
 }
