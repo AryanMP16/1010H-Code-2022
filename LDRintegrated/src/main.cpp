@@ -56,11 +56,19 @@ void autonomous() {
   return power;}
 
   int DIR = 1;
+  int RECState = 0;
 
 void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w"); //open a file named 1010H
 		int time = 0; //reset timer
-	int time=0;
+
+	switch(RECState) {
+  		case 1:
+    		// code block
+    		break;
+  		default:
+    		// code block
+	}
 
 	while (time < 15000) { //main loop
 		int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
@@ -88,7 +96,6 @@ void opcontrol() {
 		fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
 		fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
 		fprintf(file, "%d\n", clawTargetR); //FORMERLY: fprintf(file, "%f\n", getVelocity(futureUse4));
-
 
 		delay(10);
 		time += 10;

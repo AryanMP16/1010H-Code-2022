@@ -66,6 +66,7 @@ extern int xRF;
  //globals
  extern int clawTargetR;
  extern int DIR;
+ extern int RECState;
  extern int clawTargetL;
  extern bool goingToCrash;
  extern int batmeter;
