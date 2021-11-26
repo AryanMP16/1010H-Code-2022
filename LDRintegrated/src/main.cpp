@@ -60,53 +60,58 @@ void autonomous() {
 
 void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w"); //open a file named 1010H
-		int time = 0; //reset timer
+		int time;
 
-	switch(RECState) {
-  		case 1:
-    		// code block
-    		break;
-  		default:
-    		// code block
-	}
-
-	while (time < 15000) { //main loop
+	while(true){
 		int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
- 		//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
- 		int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
-      	driveLB.move((DIR * (-Y)) /*- X*/ - Z);
- 	    driveRF.move((DIR * (-Y)) /*- X*/ + Z);
- 	    driveLF.move((DIR * (-Y)) /*+ X*/ - Z);
- 	    driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
+					//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
+					int Z = exponentialD(master.get_analog(ANALOG_RIGHT_X), 1.7, 8, 15);
+					driveLB.move((DIR * (-Y)) /*- X*/ - Z);
+					driveRF.move((DIR * (-Y)) /*- X*/ + Z);
+					driveLF.move((DIR * (-Y)) /*+ X*/ - Z);
+					driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
 
-      	if(master.get_digital(DIGITAL_X)){
-        	DIR = 1;
-        } 
-      	if (master.get_digital(DIGITAL_B)){
-          DIR = -1;
-        }
-		screen.refresh();
-		movingParts.Rollers(); //using function for rollers, conveyor, and intakes
-		
-		fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ + Z)); //record velocity values for drive base motors
-		fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ - Z)); //record velocity values for drive base motors
-		fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ + Z)); //record velocity values for drive base motors
-		fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ - Z)); //record velocity values for drive base motors
-		fprintf(file, "%f\n", getVelocity(rClaw)); //record velocity values for intake motors
-		fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
-		fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
-		fprintf(file, "%d\n", clawTargetR); //FORMERLY: fprintf(file, "%f\n", getVelocity(futureUse4));
+					if(master.get_digital(DIGITAL_X)){
+						DIR = 1;
+					} 
+					if (master.get_digital(DIGITAL_B)){
+					DIR = -1;
+					}
+					screen.refresh();
+					movingParts.Rollers(); //using function for rollers, conveyor, and intakes
 
-		delay(10);
-		time += 10;
+		switch(RECState) {
+			case 1:
+				time = 0; //reset timer
+				if (time < 15000) { //main loop					
+					fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ + Z)); //record velocity values for drive base motors
+					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ - Z)); //record velocity values for drive base motors
+					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ + Z)); //record velocity values for drive base motors
+					fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ - Z)); //record velocity values for drive base motors
+					fprintf(file, "%f\n", getVelocity(rClaw)); //record velocity values for intake motors
+					fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
+					fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
+					fprintf(file, "%d\n", clawTargetR); //FORMERLY: fprintf(file, "%f\n", getVelocity(futureUse4));
+
+					delay(10);
+					time += 10;
+				}
+				else {
+					driveRB.move_velocity(0); //DO NOT MOVE ANY MOTORS
+					driveLB.move_velocity(0);
+					driveRF.move_velocity(0);
+					driveLF.move_velocity(0);
+					rClaw.move_velocity(0);
+					lClaw.move_velocity(0);
+					roller.move_velocity(0);
+					futureUse4.move_velocity(0);
+					fclose(file); //close file
+				}
+				break;
+			default:
+				time = 0; //reset timer
+				delay(10);
+				time+=10;
+		}
 	}
-	driveRB.move_velocity(0); //DO NOT MOVE ANY MOTORS
-	driveLB.move_velocity(0);
-	driveRF.move_velocity(0);
-	driveLF.move_velocity(0);
-	rClaw.move_velocity(0);
-	lClaw.move_velocity(0);
-	roller.move_velocity(0);
-	futureUse4.move_velocity(0);
-	fclose(file); //close file
 }

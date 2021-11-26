@@ -4,7 +4,9 @@
 #include "display/lvgl.h"
 
 string Rdist;
+lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), NULL);
 lv_obj_t*led1;
+lv_obj_t*labelA;
 lv_obj_t*led2;
 lv_obj_t * sys_battery_meter;
 lv_obj_t * battery_text;
@@ -53,8 +55,17 @@ void Display::createImage(void){
   lv_obj_align(freemanboris, NULL, LV_ALIGN_CENTER, 95, 0);
 }
 
+void Display::createButton(void){
+  lv_obj_align(btn2, NULL, LV_ALIGN_CENTER, 0, 40);
+  lv_btn_toggle(btn2);
+
+  labelA = lv_label_create(btn2, NULL);
+  lv_label_set_text(labelA, "Record ON");
+}
+
 void Display::refresh(void)
 {
+  //button switch recstate ^^
   if(backR.get() > 200){lv_led_on(led1);}
   else{lv_led_off(led1);}
 

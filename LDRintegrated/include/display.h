@@ -16,6 +16,7 @@ public:
   void linemeter();
   void lv_ex_led_1();
   void lv_ex_led_2();
+  void createButton();
 };
 
  /*extern Task disp_task;
