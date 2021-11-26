@@ -65,7 +65,7 @@ void Display::createButton(void){
 
 void Display::refresh(void)
 {
-  //button switch recstate ^^
+  //button switch recstate here (eventually)
   if(backR.get() > 200){lv_led_on(led1);}
   else{lv_led_off(led1);}
 
