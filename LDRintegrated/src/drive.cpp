@@ -3,7 +3,6 @@
 
 int clawTargetR;
 int clawTargetL;
-int DIR = -1;
 ADIAnalogIn outer_limitL ('E');
 ADIAnalogIn outer_limitR ('H');
 //____________________________________________________________________________//

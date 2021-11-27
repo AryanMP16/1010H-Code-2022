@@ -64,6 +64,7 @@ extern int xRF;
  extern opClass base;
 
  //globals
+ extern lv_obj_t*led1;
  extern int clawTargetR;
  extern int DIR;
  extern int RECState;

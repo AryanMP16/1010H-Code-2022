@@ -4,24 +4,19 @@
 #include "display/lvgl.h"
 
 string Rdist;
-lv_obj_t * btn2 = lv_btn_create(lv_scr_act(), NULL);
-lv_obj_t*led1;
+lv_obj_t * btn2;
 lv_obj_t*labelA;
-lv_obj_t*led2;
 lv_obj_t * sys_battery_meter;
 lv_obj_t * battery_text;
 lv_obj_t * tabs = lv_tabview_create(lv_scr_act(), NULL);
 lv_obj_t * main_tab = lv_tabview_add_tab(tabs, "MAIN");
 lv_obj_t * adv_tab = lv_tabview_add_tab(tabs, "ADV/DIAG");
+lv_obj_t * led1;
 
 void Display::lv_ex_led_1(void) {
     led1 = lv_led_create(adv_tab, NULL);
-    lv_obj_align(led1, NULL, LV_ALIGN_CENTER, -205, 200);
-    lv_obj_set_size(led1, 95, 35);
-
-    led2 = lv_led_create(adv_tab, NULL);
-    lv_obj_align(led2, NULL, LV_ALIGN_CENTER, -205, -45);
-    lv_obj_set_size(led2, 95, 35);
+    lv_obj_align(led1, NULL, LV_ALIGN_CENTER, -205, -200);
+    lv_obj_set_size(led1, 95, 70);
 }
 
 void Display::linemeter(void){
@@ -41,11 +36,7 @@ void Display::linemeter(void){
 void Display::createTitle(void){
     lv_obj_t*label1 = lv_label_create(adv_tab, NULL);
     lv_obj_align(label1, NULL, LV_ALIGN_CENTER, -185, 33);
-    lv_label_set_text(label1, "R-Dist");
-
-    lv_obj_t*label2 = lv_label_create(adv_tab, NULL);
-    lv_obj_align(label2, NULL, LV_ALIGN_CENTER, -185, -20);
-    lv_label_set_text(label2, "L-Dist");
+    lv_label_set_text(label1, "");
 }
 
 void Display::createImage(void){
@@ -56,21 +47,27 @@ void Display::createImage(void){
 }
 
 void Display::createButton(void){
-  lv_obj_align(btn2, NULL, LV_ALIGN_CENTER, 0, 40);
-  lv_btn_toggle(btn2);
+  btn2 = lv_btn_create(adv_tab, NULL);
+
+  lv_obj_set_size(btn2, 150, 40);
+  lv_obj_align(btn2, NULL, LV_ALIGN_CENTER, -20, 0);
 
   labelA = lv_label_create(btn2, NULL);
   lv_label_set_text(labelA, "Record ON");
+
+  lv_btn_set_toggle(btn2, true);
 }
 
 void Display::refresh(void)
 {
-  //button switch recstate here (eventually)
-  if(backR.get() > 200){lv_led_on(led1);}
-  else{lv_led_off(led1);}
-
-  if(backL.get() > 200) {lv_led_on(led2);}
-  else{lv_led_off(led2);}
+  //printf("%d\n", lv_btn_get_state(btn2));
+  if (lv_btn_get_state(btn2) >= 1){
+    int time = 0;
+    RECState = 1;
+  }
+  else{
+    RECState = 0;
+  }
 
   int boi = pros::battery::get_capacity();
   lv_lmeter_set_value(sys_battery_meter, boi);
@@ -79,7 +76,7 @@ void Display::refresh(void)
   delay(10);
 }
 
-void Display::createScreen(void)
+void Display::createScreen(void) 
 {
   lv_theme_t * theme = lv_theme_nemo_init(30, NULL); //60 For TTYellow
   lv_theme_set_current(theme);
@@ -87,4 +84,5 @@ void Display::createScreen(void)
   linemeter();
   createTitle();
   createImage();
+  createButton();
 }
