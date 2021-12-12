@@ -68,6 +68,7 @@ extern int xRF;
  extern int clawTargetR;
  extern int DIR;
  extern int RECState;
+ extern int AUTOState;
  extern int clawTargetL;
  extern bool goingToCrash;
  extern int batmeter;
@@ -77,6 +78,7 @@ extern int xRF;
 
 //Task
  extern Task acc_task;
+ extern Task bingBongTask;
 //Motors
  extern Motor driveRB;
  extern Motor driveRF;

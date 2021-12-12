@@ -3,6 +3,7 @@
 //UC Schools: Look at these files :)
 int clawTargetR;
 int clawTargetL;
+int bingBongTarg;
 ADIAnalogIn outer_limitL ('E');
 ADIAnalogIn outer_limitR ('H');
 //____________________________________________________________________________//
@@ -27,10 +28,10 @@ void opClass::Rollers() {
   else if(master.get_digital(DIGITAL_L2)){clawTargetR = 980;}
   else{futureUse4.move_absolute(BUILT_DIFFERENT,0);}
 
-  if(master.get_digital(DIGITAL_R1)){roller.move_velocity(-130);} //REMOVE COMMENTS ON THIS//////////////////////////
-  else if(master.get_digital(DIGITAL_R2)){roller.move_velocity(130);}
-  else if (master.get_digital(DIGITAL_UP)){roller.move_velocity(-200);}
-  else if (master.get_digital(DIGITAL_DOWN)){roller.move_velocity(200);}
+  if(master.get_digital(DIGITAL_R2)){roller.move_velocity(-600);} //REMOVE COMMENTS ON THIS//////////////////////////
+  else if(master.get_digital(DIGITAL_R1)){roller.move_velocity(600);}
+  else if (master.get_digital(DIGITAL_UP)){bingBongTarg = 200;}
+  else if (master.get_digital(DIGITAL_DOWN)){bingBongTarg = -200;}
   else{roller.move_velocity(0);}
   };
   //____________________________________________________________________________//

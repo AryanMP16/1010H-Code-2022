@@ -5,12 +5,18 @@
 //UC Schools: Look at these files :)
 string Rdist;
 lv_obj_t * btn2;
-lv_obj_t*labelA;
+lv_obj_t * btnLeftAuto;
+lv_obj_t * btnRightAuto;
+lv_obj_t * btnSkillsAuto;
+lv_obj_t * labelA;
+lv_obj_t * labelBTEST;
+lv_obj_t * TESTTEST;
 lv_obj_t * sys_battery_meter;
 lv_obj_t * battery_text;
 lv_obj_t * tabs = lv_tabview_create(lv_scr_act(), NULL);
 lv_obj_t * main_tab = lv_tabview_add_tab(tabs, "MAIN");
 lv_obj_t * adv_tab = lv_tabview_add_tab(tabs, "ADV/DIAG");
+lv_obj_t * auto_tab = lv_tabview_add_tab(tabs, "AUTO");
 lv_obj_t * led1;
 
 void Display::lv_ex_led_1(void) {
@@ -48,24 +54,50 @@ void Display::createImage(void){
 
 void Display::createButton(void){
   btn2 = lv_btn_create(adv_tab, NULL);
-
   lv_obj_set_size(btn2, 150, 40);
   lv_obj_align(btn2, NULL, LV_ALIGN_CENTER, -20, 0);
-
   labelA = lv_label_create(btn2, NULL);
   lv_label_set_text(labelA, "Record ON");
-
   lv_btn_set_toggle(btn2, true);
+
+  btnSkillsAuto = lv_btn_create(adv_tab, NULL);
+  lv_obj_set_size(btnSkillsAuto, 150, 40);
+  lv_obj_align(btnSkillsAuto, NULL, LV_ALIGN_CENTER, -20, 50);
+  labelBTEST = lv_label_create(btnSkillsAuto, NULL);
+  lv_label_set_text(labelBTEST, "Auto SKILLS");
+  lv_btn_set_toggle(btnSkillsAuto, true);
+
+  btnRightAuto = lv_btn_create(adv_tab, NULL);
+  lv_obj_set_size(btnRightAuto, 150, 40);
+  lv_obj_align(btnRightAuto, NULL, LV_ALIGN_CENTER, -20, 87);
+  TESTTEST = lv_label_create(btnRightAuto, NULL);
+  lv_label_set_text(TESTTEST, "R When On");
+  lv_btn_set_toggle(btnRightAuto, true);
 }
 
 void Display::refresh(void)
 {
-  //printf("%d\n", lv_btn_get_state(btn2));
+  ////////////////////////////////////////
+  if (lv_btn_get_state(btnSkillsAuto) >= 1){
+    AUTOState = 1;
+  }
+  else if (lv_btn_get_state(btnRightAuto) >= 1 && lv_btn_get_state(btnSkillsAuto) == 0){
+    AUTOState = 2; //RIGHT AUTO
+  }
+  else if (lv_btn_get_state(btnRightAuto) == 0 && lv_btn_get_state(btnSkillsAuto) == 0){
+    AUTOState = 3; //LEFT AUTO
+  }
+  else{
+    AUTOState = 0;
+  }
+  /////////////////////////////////
   if (lv_btn_get_state(btn2) >= 1){
-    int time = 0;
+    pros::delay(3000);
+    lv_led_on(led1);
     RECState = 1;
   }
   else{
+    lv_led_off(led1);
     RECState = 0;
   }
 
@@ -76,7 +108,7 @@ void Display::refresh(void)
   delay(10);
 }
 
-void Display::createScreen(void) 
+void Display::createScreen(void)
 {
   lv_theme_t * theme = lv_theme_nemo_init(30, NULL); //60 For TTYellow
   lv_theme_set_current(theme);
