@@ -1,5 +1,5 @@
 # Welcome to Team 1010H's GitHub!
-Whether you're from Ten Ton Robotics, another VEX team, or the University of California Admissions Office, welcome!
+Whether you're from Ten Ton Robotics, another VEX team, or a university admissions office, welcome!
 
 My name is Aryan Mosavianpour, the head programmer of team 1010H. This is our code for the VEX 2021/2022 EDR season, written in C++ (using the PROS library). 
 
