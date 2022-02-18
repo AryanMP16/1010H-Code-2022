@@ -49,11 +49,12 @@ void AccTask_fn(void*par) {
 		float kI = 0;
 		float kD = 1.5;
 
-		error = clawTargetR - futureUse4.get_position(); //error value equals arm target minus the arm's current position
+		error = clawTargetR - rClaw.get_position(); //error value equals arm target minus the arm's current position
 		sumError += error; //sum error is defined as the error plus the sum of the error
 		diffError = error - errorLast; //difference in error is equal to error minus the last error, which is also defined as error
-		futureUse4.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
-		errorLast = error; //error last is defined as error
+		rClaw.move((error * kP) + (sumError * kI) + (diffError * kD)); //arm will move according to kp, ki, and kd values
+		lClaw.move((error * kP) + (sumError * kI) + (diffError * kD));
+    errorLast = error; //error last is defined as error
 
     }
 };
