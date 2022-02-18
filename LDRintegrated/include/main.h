@@ -49,6 +49,7 @@ static string RUNF = "RUNF.txt";
 // using namespace okapi;
 //globals
 extern int clawTargetR;
+extern int rbPPtarg;
 extern int clawTargetL;
 extern int xLB;
 extern int xLF;
@@ -64,6 +65,7 @@ extern int xRF;
  extern opClass base;
 
  //globals
+ extern int pistonState;
  extern lv_obj_t*led1;
  extern int clawTargetR;
  extern int DIR;

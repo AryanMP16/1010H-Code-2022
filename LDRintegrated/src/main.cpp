@@ -12,13 +12,13 @@ opClass base;
 opClass movingParts;
 //motors
 Motor futureUse4(17, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES); //CAP LIFT
-Motor driveRB(15, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveRB(15, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 Motor lClaw(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES); //left arm motor
 Motor roller(20, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 Motor rClaw(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES); //right arm motor
-Motor driveRF(16, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-Motor driveLF(18, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-Motor driveLB(19, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor driveRF(16, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor driveLF(18, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveLB(19, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 int time=0;
 Distance backR (14);
 Distance backL (9);
@@ -56,19 +56,27 @@ void autonomous() {
   int power = joystkSign * (motorMin + (127 - motorMin) * pow(joyLive, driveExpon) / pow(joyMax, driveExpon));
   return power;}
 
-  int DIR = -1;
+  int DIR = 1;
+	int pistonState = 0;
   int RECState = 0;
 
 void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w"); //open a file named 1010H
 	int time;
-	
+// help me Ive been stuck in the basement for 4 years programming for aryan I get one meal a week I can't leave someone help me please
 	while(true){
 		screen.refresh();
 		switch(RECState) {
 			case 1:
 				time = 0; //reset timer
-				while (time < 15000) {
+				while (time < 59000) {
+					if (master.get_digital(DIGITAL_UP)){
+						pistonState = 1;
+					}
+					if(master.get_digital(DIGITAL_RIGHT)){
+						pistonState = 0;
+					}
+
 					lv_led_on(led1);
 					int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
 					//int X = exponentialD(master.get_analog(ANALOG_LEFT_X), 1.7, 8, 15);
@@ -79,13 +87,13 @@ void opcontrol() {
 					driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
 
 					if(master.get_digital(DIGITAL_X)){
-						DIR = 1;
-					} 
+						DIR = -1;
+					}
 					if (master.get_digital(DIGITAL_B)){
-					DIR = -1;
+					DIR = 1;
 					}
 					movingParts.Rollers(); //using function for rollers, conveyor, and intakes
-					//main loop					
+					//main loop
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ + Z)); //record velocity values for drive base motors
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ - Z)); //record velocity values for drive base motors
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ + Z)); //record velocity values for drive base motors
@@ -94,11 +102,12 @@ void opcontrol() {
 					fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
 					fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
 					fprintf(file, "%d\n", clawTargetR); //FORMERLY: fprintf(file, "%f\n", getVelocity(futureUse4));
+					fprintf(file, "%d\n", pistonState);
 
 					delay(10);
 					time += 10;
 				}
-				if (time >= 15000) {
+				if (time >= 59000) {
 					driveRB.move_velocity(0); //DO NOT MOVE ANY MOTORS
 					driveLB.move_velocity(0);
 					driveRF.move_velocity(0);
@@ -111,6 +120,12 @@ void opcontrol() {
 				fclose(file); //close file
 				break;
 			default:
+			if (master.get_digital(DIGITAL_UP)){
+				pistonState = 1;
+			}
+			if(master.get_digital(DIGITAL_RIGHT)){
+				pistonState = 0;
+			}
 				//NOT RECORDING
 				time = 0; //reset timer
 				int Y = exponentialD(master.get_analog(ANALOG_LEFT_Y), 1.7, 8, 15);
@@ -122,10 +137,10 @@ void opcontrol() {
 				driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
 
 				if(master.get_digital(DIGITAL_X)){
-					DIR = 1;
-				} 
+					DIR = -1;
+				}
 				if (master.get_digital(DIGITAL_B)){
-				DIR = -1;
+				DIR = 1;
 				}
 				movingParts.Rollers(); //using function for rollers, conveyor, and intakes
 				time = 0; //reset timer

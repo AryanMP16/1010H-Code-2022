@@ -16,12 +16,12 @@ else if (AUTOState == 3){
   fp = fopen("/usd/1010H-LEFT.txt", "r"); //lift
 }
 
-  static float m1, m2, m3, m4, m5, m6, m7, m8; //these are placeholders for motor velocities
+  static float m1, m2, m3, m4, m5, m6, m7, m8, m9; //these are placeholders for motor velocities
 
     while (true) { //main while loop
       time+=10;
       delay(10);
-
+/*
       if (time<=16000 && time>=15000){
         int rightLIDAR = (backR.get());
         int leftLIDAR = (backL.get());
@@ -174,9 +174,9 @@ else if (AUTOState == 3){
 
 //////TURNED AND ALIGNED NOW
 
-      else {
+      else {*/
         //reading from the array
-        fscanf(fp, "%f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m6, &m7, &m8); //read a stream and format the file
+        fscanf(fp, "%f %f %f %f %f %f %f %f %f", &m1, &m2, &m3, &m4, &m5, &m6, &m7, &m8, &m9); //read a stream and format the file
         //drive
         driveLB.move(m2); //plays values from listed above recorded values
         driveRB.move(m1);
@@ -190,6 +190,7 @@ else if (AUTOState == 3){
         //flywheel and roller
         roller.move_velocity(m7);
         clawTargetR = (m8); //FORMERLY: futureUse4.move_velocity(m8);
-      }
+        pistonState = m9;
+      //}
   }
 }

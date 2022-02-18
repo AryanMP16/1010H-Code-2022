@@ -2,9 +2,11 @@
 #include "drive.h"
 int clawTargetR;
 int clawTargetL;
+int rbPPtarg;
 int bingBongTarg;
 ADIAnalogIn outer_limitL ('E');
 ADIAnalogIn outer_limitR ('H');
+ADIDigitalOut piston ('A');
 //____________________________________________________________________________//
 /////////////////////////////EXPO DRIVE FUNC////////////////////////////////////
 //____________________________________________________________________________//
@@ -23,14 +25,14 @@ Controller master (CONTROLLER_MASTER); //
 Controller partner (CONTROLLER_PARTNER);
 void opClass::Rollers() {
   int BUILT_DIFFERENT = futureUse4.get_position();
-  if(master.get_digital(DIGITAL_L1)){clawTargetR = 350;}
-  else if(master.get_digital(DIGITAL_L2)){clawTargetR = 980;}
+  if(master.get_digital(DIGITAL_L1)){clawTargetR = 1400;}
+  else if(master.get_digital(DIGITAL_L2)){clawTargetR = 0;}
   else{futureUse4.move_absolute(BUILT_DIFFERENT,0);}
 
   if(master.get_digital(DIGITAL_R2)){roller.move_velocity(-600);} //REMOVE COMMENTS ON THIS//////////////////////////
   else if(master.get_digital(DIGITAL_R1)){roller.move_velocity(600);}
-  else if (master.get_digital(DIGITAL_UP)){bingBongTarg = 200;}
-  else if (master.get_digital(DIGITAL_DOWN)){bingBongTarg = -200;}
+  else if (master.get_digital(DIGITAL_X)){rbPPtarg = 100;} //rbPP up
+  else if (master.get_digital(DIGITAL_Y)){rbPPtarg = 500;} //rbPP down
   else{roller.move_velocity(0);}
   };
   //____________________________________________________________________________//
@@ -38,11 +40,20 @@ void opClass::Rollers() {
   //____________________________________________________________________________//
 void AccTask_fn(void*par) {
   futureUse4.tare_position();
-
+  rClaw.tare_position();
+  rbPPtarg = 0;
   clawTargetR = 0;
 
   while (true) {
+    if(pistonState == 0){
+			piston.set_value(false);
+		}
+		else if (pistonState == 1){
+			piston.set_value(true);
+		}
+
     int error, sumError, diffError, errorLast, output;
+    int errorP, sumErrorP, diffErrorP, errorLastP, outputP;
     int BUILT_DIFFERENT;
 
 		float kP = 0.9;
@@ -56,7 +67,14 @@ void AccTask_fn(void*par) {
 		lClaw.move((error * kP) + (sumError * kI) + (diffError * kD));
     errorLast = error; //error last is defined as error
 
+    errorP = rbPPtarg - futureUse4.get_position(); //error value equals arm target minus the arm's current position
+		sumErrorP += errorP; //sum error is defined as the error plus the sum of the error
+		diffErrorP = errorP - errorLastP; //difference in error is equal to error minus the last error, which is also defined as error
+		futureUse4.move((errorP * kP) + (sumErrorP * kI) + (diffErrorP * kD)); //arm will move according to kp, ki, and kd values
+    errorLastP = errorP; //error last is defined as error
     }
+
+
 };
 //____________________________________________________________________________//
 /////////////////////////////////SWERVE PID///////////////////////////////////////
