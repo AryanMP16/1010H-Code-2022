@@ -1,6 +1,5 @@
 #include "main.h"
 #include "drive.h"
-//UC Schools: Look at these files :)
 int clawTargetR;
 int clawTargetL;
 int bingBongTarg;

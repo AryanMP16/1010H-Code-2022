@@ -1,6 +1,5 @@
 #include "main.h" //include the main.h file to access all of the namespaces and includes
 #include "run.h" //include the run.h file to access all of the functions and the main.h file
-//UC Schools: Look at these files :)
 void Run() { //the main run loop
 
   int time;

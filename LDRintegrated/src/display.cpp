@@ -2,7 +2,6 @@
 #include "display.h"
 #include <string.h>
 #include "display/lvgl.h"
-//UC Schools: Look at these files :)
 string Rdist;
 lv_obj_t * btn2;
 lv_obj_t * btnLeftAuto;

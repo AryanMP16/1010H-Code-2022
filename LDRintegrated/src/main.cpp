@@ -6,20 +6,19 @@
 int AUTOState = 0;
 bool False = true;
 Display screen;
-//UC Schools: Look at these files :)
 //drive objects
 dpidClass chassis;
 opClass base;
 opClass movingParts;
 //motors
 Motor futureUse4(17, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES); //CAP LIFT
-Motor driveRB(15, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor driveRB(15, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 Motor lClaw(3, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 Motor roller(20, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
 Motor rClaw(7, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-Motor driveRF(16, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
-Motor driveLF(18, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
-Motor driveLB(19, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveRF(16, E_MOTOR_GEARSET_18, true, E_MOTOR_ENCODER_DEGREES);
+Motor driveLF(18, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
+Motor driveLB(19, E_MOTOR_GEARSET_18, false, E_MOTOR_ENCODER_DEGREES);
 int time=0;
 Distance backR (14);
 Distance backL (9);
