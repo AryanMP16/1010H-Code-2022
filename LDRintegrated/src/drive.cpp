@@ -11,6 +11,7 @@ ADIDigitalOut piston ('A');
 /////////////////////////////EXPO DRIVE FUNC////////////////////////////////////
 //____________________________________________________________________________//
 Controller master (CONTROLLER_MASTER); //
+Controller partner (CONTROLLER_PARTNER);
 //expo drive
 //____________________________________________________________________________//
 /////////////////////////////GET VELOCITY FUNC//////////////////////////////////
@@ -22,17 +23,17 @@ Controller master (CONTROLLER_MASTER); //
 ////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////ROLLER INTAKE FUNC/////////////////////////////////
 //____________________________________________________________________________//
-Controller partner (CONTROLLER_PARTNER);
 void opClass::Rollers() {
   int BUILT_DIFFERENT = futureUse4.get_position();
-  if(master.get_digital(DIGITAL_L1)){clawTargetR = 1400;}
-  else if(master.get_digital(DIGITAL_L2)){clawTargetR = 0;}
+  if(partner.get_digital(DIGITAL_X)){clawTargetR = 1400;}
+  else if(partner.get_digital(DIGITAL_A)){clawTargetR = 840;}
+  else if(partner.get_digital(DIGITAL_B)){clawTargetR = 0;}
   else{futureUse4.move_absolute(BUILT_DIFFERENT,0);}
 
   if(master.get_digital(DIGITAL_R2)){roller.move_velocity(-600);} //REMOVE COMMENTS ON THIS//////////////////////////
   else if(master.get_digital(DIGITAL_R1)){roller.move_velocity(600);}
-  else if (master.get_digital(DIGITAL_X)){rbPPtarg = 100;} //rbPP up
-  else if (master.get_digital(DIGITAL_Y)){rbPPtarg = 500;} //rbPP down
+  else if (master.get_digital(DIGITAL_L1)){rbPPtarg = 0;} //rbPP up
+  else if (master.get_digital(DIGITAL_L2)){rbPPtarg = 500;} //rbPP down
   else{roller.move_velocity(0);}
   };
   //____________________________________________________________________________//

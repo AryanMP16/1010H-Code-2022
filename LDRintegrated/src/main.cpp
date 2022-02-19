@@ -63,17 +63,17 @@ void autonomous() {
 void opcontrol() {
 	FILE* file = fopen("/usd/1010H.txt", "w"); //open a file named 1010H
 	int time;
-// help me Ive been stuck in the basement for 4 years programming for aryan I get one meal a week I can't leave someone help me please
+
 	while(true){
 		screen.refresh();
 		switch(RECState) {
 			case 1:
 				time = 0; //reset timer
-				while (time < 59000) {
-					if (master.get_digital(DIGITAL_UP)){
+				while (time < 15000) {
+					if (partner.get_digital(DIGITAL_X)){
 						pistonState = 1;
 					}
-					if(master.get_digital(DIGITAL_RIGHT)){
+					if(partner.get_digital(DIGITAL_A)){
 						pistonState = 0;
 					}
 
@@ -85,20 +85,13 @@ void opcontrol() {
 					driveRF.move((DIR * (-Y)) /*- X*/ + Z);
 					driveLF.move((DIR * (-Y)) /*+ X*/ - Z);
 					driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
-
-					if(master.get_digital(DIGITAL_X)){
-						DIR = -1;
-					}
-					if (master.get_digital(DIGITAL_B)){
-					DIR = 1;
-					}
 					movingParts.Rollers(); //using function for rollers, conveyor, and intakes
 					//main loop
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ + Z)); //record velocity values for drive base motors
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ - Z)); //record velocity values for drive base motors
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ + Z)); //record velocity values for drive base motors
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ - Z)); //record velocity values for drive base motors
-					fprintf(file, "%f\n", getVelocity(rClaw)); //record velocity values for intake motors
+					fprintf(file, "%d\n", rbPPtarg); //record velocity values for intake motors
 					fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
 					fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
 					fprintf(file, "%d\n", clawTargetR); //FORMERLY: fprintf(file, "%f\n", getVelocity(futureUse4));
@@ -107,7 +100,7 @@ void opcontrol() {
 					delay(10);
 					time += 10;
 				}
-				if (time >= 59000) {
+				if (time >= 15000) {
 					driveRB.move_velocity(0); //DO NOT MOVE ANY MOTORS
 					driveLB.move_velocity(0);
 					driveRF.move_velocity(0);
@@ -120,10 +113,10 @@ void opcontrol() {
 				fclose(file); //close file
 				break;
 			default:
-			if (master.get_digital(DIGITAL_UP)){
+			if (partner.get_digital(DIGITAL_UP)){
 				pistonState = 1;
 			}
-			if(master.get_digital(DIGITAL_RIGHT)){
+			if(partner.get_digital(DIGITAL_DOWN)){
 				pistonState = 0;
 			}
 				//NOT RECORDING
@@ -135,13 +128,6 @@ void opcontrol() {
 				driveRF.move((DIR * (-Y)) /*- X*/ + Z);
 				driveLF.move((DIR * (-Y)) /*+ X*/ - Z);
 				driveRB.move((DIR * (-Y)) /*+ X*/ + Z);
-
-				if(master.get_digital(DIGITAL_X)){
-					DIR = -1;
-				}
-				if (master.get_digital(DIGITAL_B)){
-				DIR = 1;
-				}
 				movingParts.Rollers(); //using function for rollers, conveyor, and intakes
 				time = 0; //reset timer
 				delay(10);
