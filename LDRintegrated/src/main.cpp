@@ -71,10 +71,10 @@ void opcontrol() {
 				time = 0; //reset timer
 				while (time < 15000) {
 					if (partner.get_digital(DIGITAL_X)){
-						pistonState = 1;
+						pistonState = 0;
 					}
 					if(partner.get_digital(DIGITAL_A)){
-						pistonState = 0;
+						pistonState = 1;
 					}
 
 					lv_led_on(led1);
@@ -113,11 +113,11 @@ void opcontrol() {
 				fclose(file); //close file
 				break;
 			default:
-			if (partner.get_digital(DIGITAL_UP)){
-				pistonState = 1;
-			}
-			if(partner.get_digital(DIGITAL_DOWN)){
+			if (partner.get_digital(DIGITAL_X)){
 				pistonState = 0;
+			}
+			if(partner.get_digital(DIGITAL_A)){
+				pistonState = 1;
 			}
 				//NOT RECORDING
 				time = 0; //reset timer
