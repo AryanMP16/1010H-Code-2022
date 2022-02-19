@@ -185,7 +185,7 @@ else if (AUTOState == 3){
         //roller intakes
         ////////////////////////////////
         lClaw.move_velocity(m6);
-        rbPPtarg = (m5); 
+        pistonStateP = (m5); 
         ////////////////////////////////
         //flywheel and roller
         roller.move_velocity(m7);

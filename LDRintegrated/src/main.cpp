@@ -58,6 +58,7 @@ void autonomous() {
 
   int DIR = 1;
 	int pistonState = 0;
+	int pistonStateP = 0;
   int RECState = 0;
 
 void opcontrol() {
@@ -70,10 +71,10 @@ void opcontrol() {
 			case 1:
 				time = 0; //reset timer
 				while (time < 15000) {
-					if (partner.get_digital(DIGITAL_X)){
+					if (partner.get_digital(DIGITAL_UP)){
 						pistonState = 0;
 					}
-					if(partner.get_digital(DIGITAL_A)){
+					if(partner.get_digital(DIGITAL_DOWN)){
 						pistonState = 1;
 					}
 
@@ -91,7 +92,7 @@ void opcontrol() {
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ - Z)); //record velocity values for drive base motors
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*- X*/ + Z)); //record velocity values for drive base motors
 					fprintf(file, "%d\n", ((DIR * (-Y)) /*+ X*/ - Z)); //record velocity values for drive base motors
-					fprintf(file, "%d\n", rbPPtarg); //record velocity values for intake motors
+					fprintf(file, "%d\n", pistonStateP); //record velocity values for intake motors
 					fprintf(file, "%f\n", getVelocity(lClaw)); //record velocity values for intake motors
 					fprintf(file, "%f\n", getVelocity(roller)); //record velocity values for roller motors
 					fprintf(file, "%d\n", clawTargetR); //FORMERLY: fprintf(file, "%f\n", getVelocity(futureUse4));
@@ -113,10 +114,10 @@ void opcontrol() {
 				fclose(file); //close file
 				break;
 			default:
-			if (partner.get_digital(DIGITAL_X)){
+			if (partner.get_digital(DIGITAL_UP)){
 				pistonState = 0;
 			}
-			if(partner.get_digital(DIGITAL_A)){
+			if(partner.get_digital(DIGITAL_DOWN)){
 				pistonState = 1;
 			}
 				//NOT RECORDING

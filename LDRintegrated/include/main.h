@@ -66,6 +66,7 @@ extern int xRF;
 
  //globals
  extern int pistonState;
+ extern int pistonStateP;
  extern lv_obj_t*led1;
  extern int clawTargetR;
  extern int DIR;

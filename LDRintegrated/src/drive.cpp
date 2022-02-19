@@ -6,7 +6,8 @@ int rbPPtarg;
 int bingBongTarg;
 ADIAnalogIn outer_limitL ('E');
 ADIAnalogIn outer_limitR ('H');
-ADIDigitalOut piston ('A');
+ADIDigitalOut piston ('B');
+ADIDigitalOut pistonP ('A');
 //____________________________________________________________________________//
 /////////////////////////////EXPO DRIVE FUNC////////////////////////////////////
 //____________________________________________________________________________//
@@ -30,11 +31,16 @@ void opClass::Rollers() {
   else if(partner.get_digital(DIGITAL_B)){clawTargetR = 0;}
   else{futureUse4.move_absolute(BUILT_DIFFERENT,0);}
 
-  if(master.get_digital(DIGITAL_R2)){roller.move_velocity(-600);} //REMOVE COMMENTS ON THIS//////////////////////////
-  else if(master.get_digital(DIGITAL_R1)){roller.move_velocity(600);}
-  else if (master.get_digital(DIGITAL_L1)){rbPPtarg = 0;} //rbPP up
-  else if (master.get_digital(DIGITAL_L2)){rbPPtarg = 500;} //rbPP down
+  if(master.get_digital(DIGITAL_R2)){
+    roller.move_velocity(-600);
+  } //REMOVE COMMENTS ON THIS//////////////////////////
+  else if(master.get_digital(DIGITAL_R1)){
+    roller.move_velocity(600);
+  }
   else{roller.move_velocity(0);}
+
+  if (partner.get_digital(DIGITAL_L1)){pistonStateP = 0;} //rbPP up
+  else if (partner.get_digital(DIGITAL_L2)){pistonStateP = 1;} //rbPP down
   };
   //____________________________________________________________________________//
   ///////////////////////////TASK FUNCTION NUMBER ONE/////////////////////////////
@@ -51,6 +57,13 @@ void AccTask_fn(void*par) {
 		}
 		else if (pistonState == 1){
 			piston.set_value(true);
+		}
+
+    if(pistonStateP == 0){
+			pistonP.set_value(false);
+		}
+		else if (pistonStateP == 1){
+			pistonP.set_value(true);
 		}
 
     int error, sumError, diffError, errorLast, output;
